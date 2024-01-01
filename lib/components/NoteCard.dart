@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:znotes/constants.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class NoteCard extends StatefulWidget {
-  const NoteCard(
-      {Key? key,
-      required this.categoryType,
-      required this.isPinned,
-      required this.isStarred,
-      required this.contents, required this.dueDate})
-      : super(key: key);
-  final CategoryType categoryType;
-  final bool isPinned;
-  final bool isStarred;
-  final List<Content> contents;
-  final DateTime dueDate;
+  const NoteCard({super.key, required this.note});
 
+  final Note note;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
@@ -23,12 +14,30 @@ class NoteCard extends StatefulWidget {
 class _NoteCardState extends State<NoteCard> {
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
+    return Expanded(
         child: Center(
-      child: Column(
-        children: [
-          Row(),
-        ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: categoryColors[widget.note.category.name],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                widget.note.isStarred
+                    ? const Icon(Icons.star_border_rounded)
+                    : const SizedBox(),
+                Text(widget.note.category.name)
+              ],
+            ),
+            const Expanded(
+              child: SizedBox(
+                width: 400.0,
+                height: 300.0,
+              ),
+            )
+          ],
+        ),
       ),
     ));
   }

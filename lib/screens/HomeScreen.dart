@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/constants.dart';
@@ -22,16 +23,15 @@ class _HomeScreenState extends State<HomeScreen>
     _tabController.dispose();
     super.dispose();
     renderedTabs = [];
+    tabViews = [];
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     for (var tab in tabs) {
       renderedTabs.add(Tab(child: tab["title"]));
-      tabViews.add(
-          Center) // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
+      tabViews.add(CustomGridView(filter: tab["child"])); // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
   }
 
