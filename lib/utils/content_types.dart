@@ -2,7 +2,6 @@ import 'dart:ui';
 
 enum ContentType{audio,image,video,checkList}
 
-
 class Content{
   final ContentType type;
   final String path;
@@ -24,13 +23,20 @@ class Note{
   final List<ImageContent> images;
   final List<VideoContent> videos;
   final List<AudioContent> audios;
-  final List<String> subtasks;
+  final List<Subtask> subtasks;
   final bool completed;
   final DateTime dueDate;
   final List<DateTime> reminders;
 
-  Note(this.isStarred, this.isPinned, {required this.category, required this.color, required this.images, required this.videos, required this.audios, required this.subtasks, required this.completed, required this.dueDate, required this.reminders});
+  Note({required this.isStarred, required this.isPinned, required this.category, required this.color, required this.images, required this.videos, required this.audios, required this.subtasks, required this.completed, required this.dueDate, required this.reminders});
 
+}
+
+class Subtask{
+  final String title;
+  final bool checked;
+
+  Subtask({required this.title, required this.checked});
 }
 
 

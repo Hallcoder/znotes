@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/NoteCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:znotes/constants.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class CustomGridView extends StatefulWidget {
-  const CustomGridView({Key? key, required this.filter}) : super(key: key);
+  const CustomGridView({Key? key, required this.filter, required this.audioPlayer}) : super(key: key);
   final String filter;
-
+  final AudioPlayer audioPlayer;
   @override
   State<CustomGridView> createState() => _CustomGridViewState();
 }
@@ -25,25 +27,28 @@ class _CustomGridViewState extends State<CustomGridView> {
 
   @override
   Widget build(BuildContext context) {
-    return notes.isNotEmpty
-        ? GridView.builder(
-            itemCount: count,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 2.0,
-              childAspectRatio: 0.7,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return buildNoteCard(notes[index]);
-            },
+    return testNotes.isNotEmpty
+        ? CustomScrollView(
+            slivers: [
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7,
+                ), delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return buildNoteCard(testNotes[index]);
+                },
+                childCount: testNotes.length, // Replace with your item count
+              ),
+              )
+            ],
           )
         : const Text("No notes to show!");
   }
 
-  Widget buildNoteCard(not) {
+  NoteCard buildNoteCard(not) {
     return NoteCard(
-      note: not,
+      note: not, audioPlayer: widget.audioPlayer,
     );
   }
 
@@ -53,7 +58,6 @@ class _CustomGridViewState extends State<CustomGridView> {
     String? noteListString = prefs.getString('notes');
     if (noteListString != null) {
       notes = filterNotes(noteListString) as List<Note>;
-
       count = notes.length;
     }
   }
