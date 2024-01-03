@@ -2,15 +2,20 @@ import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:znotes/components/NoteCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class CustomGridView extends StatefulWidget {
-  const CustomGridView({Key? key, required this.filter, required this.audioPlayer}) : super(key: key);
+  const CustomGridView(
+      {Key? key, required this.filter, required this.audioPlayer})
+      : super(key: key);
   final String filter;
   final AudioPlayer audioPlayer;
+
   @override
   State<CustomGridView> createState() => _CustomGridViewState();
 }
@@ -28,27 +33,17 @@ class _CustomGridViewState extends State<CustomGridView> {
   @override
   Widget build(BuildContext context) {
     return testNotes.isNotEmpty
-        ? CustomScrollView(
-            slivers: [
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.7,
-                ), delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                  return buildNoteCard(testNotes[index]);
-                },
-                childCount: testNotes.length, // Replace with your item count
-              ),
-              )
-            ],
-          )
+        ? Wrap(
+      children: testNotes.map((note) => buildNoteCard(note)).toList()
+      ,
+    )
         : const Text("No notes to show!");
   }
 
   NoteCard buildNoteCard(not) {
     return NoteCard(
-      note: not, audioPlayer: widget.audioPlayer,
+      note: not,
+      audioPlayer: widget.audioPlayer,
     );
   }
 

@@ -65,7 +65,7 @@ class _NoteCardState extends State<NoteCard> {
       return GestureDetector(
           onTap: () {
             debugPrint("Playing Audio");
-            widget.audioPlayer.play(note.audios[0].path);
+            widget.audioPlayer.play(note.audios[0].path as Source);
           },
           child: const Icon(Icons.audiotrack_rounded));
     } else if (note.videos.isNotEmpty) {
