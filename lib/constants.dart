@@ -25,7 +25,7 @@ List<CustomGridView> tabViews = [];
 List<Note> testNotes = [
   // Existing Note
    Note(
-    category: Category(name: "work", color: Colors.blueGrey),
+    category: Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
     isPinned: false,
@@ -44,9 +44,60 @@ List<Note> testNotes = [
     dueDate: DateTime(2023, 10, 15),
     reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
   ),
+  Note(
+    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    color: Colors.yellow,
+    isStarred: true,
+    isPinned: false,
+    images: [],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Read Chapter 5', checked: true),
+      Subtask(title: 'Complete Assignment', checked: false),
+    ],
+    completed: false,
+    dueDate: DateTime(2023, 10, 18),
+    reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
+  ),
+  Note(
+    category: Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+    color: Colors.blue,
+    isStarred: true,
+    isPinned: false,
+    images: [
+      // ImageContent(path: 'assets/images/musk.jpg')
+    ],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Task 1', checked: false),
+      Subtask(title: 'Task 2', checked: true),
+
+    ],
+    completed: false,
+    dueDate: DateTime(2023, 10, 15),
+    reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
+  ),
+  Note(
+    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    color: Colors.yellow,
+    isStarred: true,
+    isPinned: false,
+    images: [],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Read Chapter 5', checked: true),
+      Subtask(title: 'Complete Assignment', checked: false),
+    ],
+    completed: false,
+    dueDate: DateTime(2023, 10, 18),
+    reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
+  ),
   // 4 Additional Notes
   Note(
-    category: Category(name: "Personal", color: Colors.purple),
+    category: Category(name: "Personal", color: categoryColors["Personal"] ?? Colors.deepPurple),
     color: Colors.red,
     isStarred: false,
     isPinned: true,
@@ -64,7 +115,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 8), DateTime(2023, 10, 10)],
   ),
   Note(
-    category: Category(name: "Study", color: Colors.orange),
+    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
@@ -80,7 +131,23 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
   Note(
-    category: Category(name: "Shopping", color: Colors.green),
+    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    color: Colors.yellow,
+    isStarred: true,
+    isPinned: false,
+    images: [],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Read Chapter 5', checked: true),
+      Subtask(title: 'Complete Assignment', checked: false),
+    ],
+    completed: false,
+    dueDate: DateTime(2023, 10, 18),
+    reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
+  ),
+  Note(
+    category: Category(name: "Shopping", color: categoryColors["Shopping"] ?? Colors.blueGrey),
     color: Colors.teal,
     isStarred: false,
     isPinned: true,
@@ -96,7 +163,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 18), DateTime(2023, 10, 19)],
   ),
   Note(
-    category: Category(name: "Others", color: Colors.grey),
+    category: Category(name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
     color: Colors.blueGrey,
     isStarred: false,
     isPinned: false,
@@ -110,5 +177,21 @@ List<Note> testNotes = [
     completed: true,
     dueDate: DateTime(2023, 10, 25),
     reminders: [DateTime(2023, 10, 22), DateTime(2023, 10, 24)],
+  ),
+  Note(
+    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    color: Colors.yellow,
+    isStarred: true,
+    isPinned: false,
+    images: [],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Read Chapter 5', checked: true),
+      Subtask(title: 'Complete Assignment', checked: false),
+    ],
+    completed: false,
+    dueDate: DateTime(2023, 10, 18),
+    reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
 ];

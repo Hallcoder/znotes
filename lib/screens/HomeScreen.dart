@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen>
           audioPlayer: audioPlayer,
         ),
       );
-      print("tabviews ${tabViews[0].filter}");// implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
+      print("tabviews ${tabViews[0]}");// implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
   }
 

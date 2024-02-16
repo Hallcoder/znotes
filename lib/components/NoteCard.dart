@@ -18,43 +18,39 @@ class _NoteCardState extends State<NoteCard> {
   @override
   Widget build(BuildContext context) {
     print(widget.note.category.name);
-    return Flex(
-      direction: Axis.vertical,
-      children: [
-        Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Container(
-          decoration: BoxDecoration(
-              color: categoryColors[widget.note.category.name],
-              borderRadius: const BorderRadius.all(Radius.circular(12.0))),
-          child: Column(
+    return Padding(
+    padding: const EdgeInsets.all(2.0),
+    child: Container(
+      // width: 150.0,
+      decoration: BoxDecoration(
+          color: categoryColors[widget.note.category.name],
+          borderRadius: const BorderRadius.all(Radius.circular(12.0))),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        widget.note.isStarred
-                            ? const Icon(Icons.star_border_rounded,size:16.0)
-                            : const SizedBox(),
-                        Text(widget.note.category.name),
-                      ],
-                    ),
-                  ),
-                  widget.note.isPinned
-                      ? const Icon(Icons.push_pin_outlined,size: 16.0,)
-                      : const SizedBox(),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    widget.note.isStarred
+                        ? const Icon(Icons.star_border_rounded,size:16.0)
+                        : const SizedBox(),
+                    Text(widget.note.category.name),
+                  ],
+                ),
               ),
-              buildContentHighestPriority(widget.note)
+              widget.note.isPinned
+                  ? const Icon(Icons.push_pin_outlined,size: 16.0,)
+                  : const SizedBox(),
             ],
           ),
-        ),
+          buildContentHighestPriority(widget.note)
+        ],
       ),
-    ]
-    );
+    ),
+      );
   }
 
   Widget buildContentHighestPriority(Note note) {
@@ -93,34 +89,15 @@ class _NoteCardState extends State<NoteCard> {
       );
     } else {
       if (note.subtasks.isNotEmpty) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListView.builder(
-                shrinkWrap: true,
+        return ListView.builder(
+              shrinkWrap: true,
                 itemCount: note.subtasks.length > 4 ? 4 : note.subtasks.length,
                 itemBuilder: (BuildContext context, int index) {
                   return CheckboxListTile(
                       title: Text(note.subtasks[index].title),
                       value: note.subtasks[0].checked,
                       onChanged: null);
-                }),
-            note.subtasks.length > 4
-                ? GestureDetector(
-                    child: const Text(
-                      "More...",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      //TODO: open the NoteCard preview in default mode which is view not edit
-                    },
-                  )
-                : const SizedBox(
-                    width: 0,
-                    height: 0,
-                  )
-          ],
-        );
+                });
       }
       return const SizedBox(width: 100.0, height: 100.0);
     }

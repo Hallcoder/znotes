@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:znotes/components/NoteCard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:znotes/constants.dart';
@@ -22,21 +20,53 @@ class CustomGridView extends StatefulWidget {
 
 class _CustomGridViewState extends State<CustomGridView> {
   late List<Note> notes = [];
+  late List<Widget> firstColumn = [];
+  late List<Widget> secondColumn = [];
+
   late int count = 0;
 
   @override
   void initState() {
     super.initState();
+    print("Calling initState");
     fetchNotes();
+    for (Note e in testNotes) {
+      print("Calling initState ${testNotes.indexOf(e)}");
+      if (testNotes.indexOf(e) % 2 == 0) {
+        firstColumn.add(buildNoteCard(e));
+        print(firstColumn[0]);
+      } else {
+        secondColumn.add(buildNoteCard(e));
+      }
+    }
   }
 
+  // List<List<Note>> createLists(){
+  //
+  // }
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double columnWidthPercentage = 0.5; // 80%
+    double columnWidth = columnWidthPercentage * screenWidth;
     return testNotes.isNotEmpty
-        ? Wrap(
-      children: testNotes.map((note) => buildNoteCard(note)).toList()
-      ,
-    )
+        ? SingleChildScrollView(
+            child:
+              Row(children: [
+                SizedBox(
+                  width: columnWidth,
+                  child: Column(
+                    children: firstColumn,
+                  ),
+                ),
+                SizedBox(
+                  width: columnWidth,
+                  child: Column(
+                    children: secondColumn,
+                  ),
+                )
+              ]),
+          )
         : const Text("No notes to show!");
   }
 
@@ -60,12 +90,12 @@ class _CustomGridViewState extends State<CustomGridView> {
   List<dynamic> filterNotes(String? noteListString) {
     List unfilteredNotes = json.decode(noteListString!);
     List filteredNotes = unfilteredNotes.where((note) {
-      debugPrint("Note Category ${note.category}");
-      debugPrint("Filter ${widget.filter}");
+      print("Note Category ${note.category}");
+      print("Filter ${widget.filter}");
       return note.category.toString().toLowerCase().trim() ==
           widget.filter.toLowerCase().trim();
     }).toList();
-    debugPrint("Notes filtered $filteredNotes");
+    print("Notes filtered $filteredNotes");
     return filteredNotes;
   }
 }
