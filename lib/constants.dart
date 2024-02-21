@@ -6,11 +6,11 @@ import 'package:znotes/utils/content_types.dart';
 
 var primaryIconColor = Colors.blueGrey;
 Map<String, Color> categoryColors = {
-  "work": const Color(0xFFE0E0E0), // Light gray
-  "Personal": const Color(0xFFFFE0B2), // Light orange
-  "Study": const Color(0xFFFFF9C4), // Soft yellow
-  "Shopping": const Color(0xFFE1BEE7), // Light purple
-  "others": const Color(0xFFC8E7D9), // Light green
+  "work": const Color(0xffe46565), // Light gray
+  "Personal": const Color(0xff6066f5), // Light orange
+  "Study": const Color(0xffffb535), // Soft yellow
+  "Shopping": const Color(0xff34c1fc), // Light purple
+  "others": const Color(0xff139c6b), // Light green
 };
 List tabs = [
   {"child": "All", "title": const Text("All")},
@@ -25,6 +25,7 @@ List<CustomGridView> tabViews = [];
 List<Note> testNotes = [
   // Existing Note
    Note(
+     titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
@@ -45,6 +46,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
   ),
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
@@ -61,6 +63,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
@@ -80,13 +83,16 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
   ),
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
     images: [],
     videos: [],
-    audios: [],
+    audios: [
+      AudioContent(path: 'audios/stromae.mp3')
+    ],
     subtasks: [
       Subtask(title: 'Read Chapter 5', checked: true),
       Subtask(title: 'Complete Assignment', checked: false),
@@ -97,6 +103,7 @@ List<Note> testNotes = [
   ),
   // 4 Additional Notes
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Personal", color: categoryColors["Personal"] ?? Colors.deepPurple),
     color: Colors.red,
     isStarred: false,
@@ -115,8 +122,30 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 8), DateTime(2023, 10, 10)],
   ),
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
-    color: Colors.yellow,
+    color: const Color(0xff6066f5),
+    isStarred: true,
+    isPinned: false,
+    images: [
+      ImageContent(path:'assets/images/musk.jpg'),
+      ImageContent(path:'assets/images/musk.jpg'),
+      ImageContent(path:'assets/images/musk.jpg')
+    ],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Read Chapter 5', checked: true),
+      Subtask(title: 'Complete Assignment', checked: false),
+    ],
+    completed: false,
+    dueDate: DateTime(2023, 10, 18),
+    reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
+  ),
+  Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
+    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    color: const Color(0xffe46565),
     isStarred: true,
     isPinned: false,
     images: [],
@@ -131,22 +160,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
   Note(
-    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
-    color: Colors.yellow,
-    isStarred: true,
-    isPinned: false,
-    images: [],
-    videos: [],
-    audios: [],
-    subtasks: [
-      Subtask(title: 'Read Chapter 5', checked: true),
-      Subtask(title: 'Complete Assignment', checked: false),
-    ],
-    completed: false,
-    dueDate: DateTime(2023, 10, 18),
-    reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
-  ),
-  Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Shopping", color: categoryColors["Shopping"] ?? Colors.blueGrey),
     color: Colors.teal,
     isStarred: false,
@@ -163,6 +177,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 18), DateTime(2023, 10, 19)],
   ),
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
     color: Colors.blueGrey,
     isStarred: false,
@@ -179,6 +194,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 22), DateTime(2023, 10, 24)],
   ),
   Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
     category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,

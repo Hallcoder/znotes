@@ -20,6 +20,7 @@ class Note{
   final Color color;
   final bool isStarred;
   final bool isPinned;
+  final String titleDescription;
   final List<ImageContent> images;
   final List<VideoContent> videos;
   final List<AudioContent> audios;
@@ -28,7 +29,7 @@ class Note{
   final DateTime dueDate;
   final List<DateTime> reminders;
 
-  Note({required this.isStarred, required this.isPinned, required this.category, required this.color, required this.images, required this.videos, required this.audios, required this.subtasks, required this.completed, required this.dueDate, required this.reminders});
+  Note({required this.titleDescription,required this.isStarred, required this.isPinned, required this.category, required this.color, required this.images, required this.videos, required this.audios, required this.subtasks, required this.completed, required this.dueDate, required this.reminders});
 
 }
 

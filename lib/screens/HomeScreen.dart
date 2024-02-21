@@ -39,13 +39,30 @@ class _HomeScreenState extends State<HomeScreen>
           audioPlayer: audioPlayer,
         ),
       );
-      print("tabviews ${tabViews[0]}");// implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
+      print(
+          "tabviews ${tabViews[0]}"); // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton(
+            shape:const CircleBorder(),
+            backgroundColor: Colors.green,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: () {
+
+            },
+          ),
+        ],
+      ),
       appBar: AppBar(
         title: const Text(
           "Notes",
