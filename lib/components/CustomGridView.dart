@@ -28,44 +28,38 @@ class _CustomGridViewState extends State<CustomGridView> {
   @override
   void initState() {
     super.initState();
-    print("Calling initState");
     fetchNotes();
     for (Note e in testNotes) {
-      print("Calling initState ${testNotes.indexOf(e)}");
       if (testNotes.indexOf(e) % 2 == 0) {
         firstColumn.add(buildNoteCard(e));
-        print(firstColumn[0]);
       } else {
         secondColumn.add(buildNoteCard(e));
       }
     }
   }
 
-  // List<List<Note>> createLists(){
-  //
-  // }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double columnWidthPercentage = 0.5; // 80%
+    double columnWidthPercentage = 0.5; // 50%
     double columnWidth = columnWidthPercentage * screenWidth;
     return testNotes.isNotEmpty
         ? SingleChildScrollView(
-            child:
-              Row(children: [
-                SizedBox(
-                  width: columnWidth,
-                  child: Column(
-                    children: firstColumn,
-                  ),
+            child: Row(
+                children: [
+              SizedBox(
+                width: columnWidth,
+                child: Column(
+                  children: firstColumn,
                 ),
-                SizedBox(
-                  width: columnWidth,
-                  child: Column(
-                    children: secondColumn,
-                  ),
-                )
-              ]),
+              ),
+              SizedBox(
+                width: columnWidth,
+                child: Column(
+                  children: secondColumn,
+                ),
+              )
+            ]),
           )
         : const Text("No notes to show!");
   }

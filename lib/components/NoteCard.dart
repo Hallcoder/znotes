@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/utils/content_types.dart';
@@ -18,12 +17,11 @@ class NoteCard extends StatefulWidget {
 
 class _NoteCardState extends State<NoteCard> {
   TextStyle whiteText = const TextStyle(color: Colors.white);
-
+  DateFormat formatter = DateFormat.yMMMMd('en_US');
   @override
   Widget build(BuildContext context) {
-    print(widget.note.category.name);
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(3.0),
       child: Container(
         // width: 150.0,
         decoration: BoxDecoration(
@@ -75,7 +73,11 @@ class _NoteCardState extends State<NoteCard> {
                   style: whiteText
               ),
             ),
-            buildContentHighestPriority(widget.note)
+            buildContentHighestPriority(widget.note),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(formatter.format(widget.note.dueDate),style: whiteText,),
+            )
           ],
         ),
       ),
@@ -88,9 +90,9 @@ class _NoteCardState extends State<NoteCard> {
       return Image.asset(note.images[0].path);
     } else if (note.audios.isNotEmpty) {
       return GestureDetector(
-        onTap: () {
+        onTap: () async {
           debugPrint("Playing Audio");
-          widget.audioPlayer.play(AssetSource(widget.note.audios[0].path));
+          await widget.audioPlayer.play(AssetSource(widget.note.audios[0].path));
         },
         child: const Icon(Icons.audiotrack_rounded),
       );

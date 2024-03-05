@@ -3,8 +3,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/constants.dart';
-import 'package:znotes/constants.dart';
-import 'package:znotes/constants.dart';
+
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -39,8 +38,7 @@ class _HomeScreenState extends State<HomeScreen>
           audioPlayer: audioPlayer,
         ),
       );
-      print(
-          "tabviews ${tabViews[0]}"); // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
+      // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
   }
 
