@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
       tabViews.add(
         CustomGridView(
           filter: tab["child"],
+          options: tab["options"],
           audioPlayer: audioPlayer,
         ),
       );

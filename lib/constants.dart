@@ -13,11 +13,11 @@ Map<String, Color> categoryColors = {
   "others": const Color(0xff139c6b), // Light green
 };
 List tabs = [
-  {"child": "All", "title": const Text("All")},
-  {"child": "Categories", "title": const Text("#Categories")},
-  {"child": "Completed", "title": const Text("Completed")},
-  {"child": "Calendar", "title": const Text("Calendar")},
-  {"child": "Unsorted", "title": const Text("Unsorted")}
+  {"child": "All", "title": const Text("All"),"options":[]},
+  {"child": "Categories", "title": const Text("#Categories"),"options":["work","study","personal"]},
+  {"child": "Completed", "title": const Text("Completed"),"options":[]},
+  {"child": "Calendar", "title": const Text("Calendar"),"options":["today","yesterday","future"]},
+  {"child": "Unsorted", "title": const Text("Unsorted"),"options":[]}
 ];
 
 List<Widget> renderedTabs = [];

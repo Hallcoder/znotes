@@ -1,8 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:znotes/constants.dart';
+import 'package:znotes/routers/router.gr.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class NoteCard extends StatefulWidget {
@@ -22,63 +24,68 @@ class _NoteCardState extends State<NoteCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
-      child: Container(
-        // width: 150.0,
-        decoration: BoxDecoration(
-          color: categoryColors[widget.note.category.name],
-          borderRadius: widget.note.isPinned
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(12.0),
-                  bottomLeft: Radius.circular(12.0),
-                  bottomRight: Radius.circular(12.0))
-              : const BorderRadius.all(Radius.circular(12.0)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      widget.note.isStarred
-                          ? const Icon(Icons.star_rounded,
-                              size: 16.0, color: Color(0xfff8f38e))
-                          : const SizedBox(),
-                      widget.note.audios.isEmpty
-                          ? const SizedBox()
-                          : const Icon(Icons.play_circle),
-                      widget.note.isPinned
-                          ? const Icon(
-                              Icons.push_pin_outlined,
-                              size: 16.0,
-                              color: Color(0xfff8f38e),
-                            )
-                          : const SizedBox(),
-                    ],
-                  ),
-                  Text(
-                      style:
-                          const TextStyle(fontSize: 16.0, color: Colors.white),
-                      "#${widget.note.category.name}")
-                ],
+      child: GestureDetector(
+        onTap:(){
+        context.router.push(const NoteEditRoute());
+        },
+        child: Container(
+          // width: 150.0,
+          decoration: BoxDecoration(
+            color: categoryColors[widget.note.category.name],
+            borderRadius: widget.note.isPinned
+                ? const BorderRadius.only(
+                    topLeft: Radius.circular(12.0),
+                    bottomLeft: Radius.circular(12.0),
+                    bottomRight: Radius.circular(12.0))
+                : const BorderRadius.all(Radius.circular(12.0)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        widget.note.isStarred
+                            ? const Icon(Icons.star_rounded,
+                                size: 16.0, color: Color(0xfff8f38e))
+                            : const SizedBox(),
+                        widget.note.audios.isEmpty
+                            ? const SizedBox()
+                            : const Icon(Icons.play_circle),
+                        widget.note.isPinned
+                            ? const Icon(
+                                Icons.push_pin_outlined,
+                                size: 16.0,
+                                color: Color(0xfff8f38e),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                    Text(
+                        style:
+                            const TextStyle(fontSize: 16.0, color: Colors.white),
+                        "#${widget.note.category.name}")
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10.0),
-              child: Text(
-                  "${widget.note.titleDescription.substring(0, 10)}...",
-                  style: whiteText
+              Container(
+                margin: const EdgeInsets.all(10.0),
+                child: Text(
+                    "${widget.note.titleDescription.substring(0, 10)}...",
+                    style: whiteText
+                ),
               ),
-            ),
-            buildContentHighestPriority(widget.note),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(formatter.format(widget.note.dueDate),style: whiteText,),
-            )
-          ],
+              buildContentHighestPriority(widget.note),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(formatter.format(widget.note.dueDate),style: whiteText,),
+              )
+            ],
+          ),
         ),
       ),
     );
