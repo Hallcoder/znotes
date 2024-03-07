@@ -20,13 +20,18 @@ class NoteCard extends StatefulWidget {
 class _NoteCardState extends State<NoteCard> {
   TextStyle whiteText = const TextStyle(color: Colors.white);
   DateFormat formatter = DateFormat.yMMMMd('en_US');
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
-      child: GestureDetector(
-        onTap:(){
-        context.router.push(const NoteEditRoute());
+      child: InkWell(
+        onTap: () {
+          context.router.push(const NoteEditRoute());
+        },
+        onLongPress: () {
+          print("long pressing....");
+          showDropDownMenu(context: context);
         },
         child: Container(
           // width: 150.0,
@@ -66,8 +71,8 @@ class _NoteCardState extends State<NoteCard> {
                       ],
                     ),
                     Text(
-                        style:
-                            const TextStyle(fontSize: 16.0, color: Colors.white),
+                        style: const TextStyle(
+                            fontSize: 16.0, color: Colors.white),
                         "#${widget.note.category.name}")
                   ],
                 ),
@@ -76,13 +81,15 @@ class _NoteCardState extends State<NoteCard> {
                 margin: const EdgeInsets.all(10.0),
                 child: Text(
                     "${widget.note.titleDescription.substring(0, 10)}...",
-                    style: whiteText
-                ),
+                    style: whiteText),
               ),
               buildContentHighestPriority(widget.note),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text(formatter.format(widget.note.dueDate),style: whiteText,),
+                child: Text(
+                  formatter.format(widget.note.dueDate),
+                  style: whiteText,
+                ),
               )
             ],
           ),
@@ -98,8 +105,8 @@ class _NoteCardState extends State<NoteCard> {
     } else if (note.audios.isNotEmpty) {
       return GestureDetector(
         onTap: () async {
-          debugPrint("Playing Audio");
-          await widget.audioPlayer.play(AssetSource(widget.note.audios[0].path));
+          await widget.audioPlayer
+              .play(AssetSource(widget.note.audios[0].path));
         },
         child: const Icon(Icons.audiotrack_rounded),
       );
@@ -149,5 +156,29 @@ class _NoteCardState extends State<NoteCard> {
       }
       return const SizedBox(width: 100.0, height: 100.0);
     }
+  }
+
+  void showDropDownMenu({required BuildContext context}) {
+    final RenderBox button = context.findRenderObject() as RenderBox;
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final Offset bottomRightPosition = button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay);
+
+    final RelativeRect position = RelativeRect.fromLTRB(
+      bottomRightPosition.dx - 50, // Adjust this value based on the menu width
+      bottomRightPosition.dy - 200, // Adjust this value based on the menu height
+      bottomRightPosition.dx,
+      bottomRightPosition.dy,
+    );
+    showMenu(
+        context: context,
+        position: position,
+        items: const [
+          PopupMenuItem(child: Text("Completed")),
+          PopupMenuItem(child: Text("Mark as Favorite")),
+          PopupMenuItem(child: Text("Add as widget")),
+          PopupMenuItem(child: Text("Copy note")),
+          PopupMenuItem(child: Text("Pin note"))
+        ]);
   }
 }
