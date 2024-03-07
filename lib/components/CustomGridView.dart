@@ -33,10 +33,12 @@ class _CustomGridViewState extends State<CustomGridView> {
     super.initState();
     fetchNotes();
     for (Note e in testNotes) {
-      if (testNotes.indexOf(e) % 2 == 0) {
-        firstColumn.add(buildNoteCard(e));
-      } else {
-        secondColumn.add(buildNoteCard(e));
+      if (e.category.name.toLowerCase() == widget.filter.toLowerCase()) {
+        if (testNotes.indexOf(e) % 2 == 0) {
+          firstColumn.add(buildNoteCard(e));
+        } else {
+          secondColumn.add(buildNoteCard(e));
+        }
       }
     }
   }
