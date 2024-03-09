@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
           filter: tab["child"],
           options: tab["options"],
           audioPlayer: audioPlayer,
+          tab:tab
         ),
       );
       // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
