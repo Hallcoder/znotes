@@ -40,8 +40,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               ),
               child: FractionallySizedBox(
                 widthFactor: 0.9,
-                child:  TextField(
-                  expands: true,
+                child:  Container(
+                  child: TextFormField(),
                 ),
               ),
             )

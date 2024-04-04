@@ -30,7 +30,6 @@ class _NoteCardState extends State<NoteCard> {
           context.router.push(const NoteEditRoute());
         },
         onLongPress: () {
-          print("long pressing....");
           showDropDownMenu(context: context);
         },
         child: Container(
@@ -68,6 +67,7 @@ class _NoteCardState extends State<NoteCard> {
                                 color: Color(0xfff8f38e),
                               )
                             : const SizedBox(),
+                            widget.note.subtasks.isEmpty ? const SizedBox(): const Icon(Icons.list_alt)
                       ],
                     ),
                     Text(
