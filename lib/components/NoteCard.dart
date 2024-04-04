@@ -73,7 +73,7 @@ class _NoteCardState extends State<NoteCard> {
                     Text(
                         style: const TextStyle(
                             fontSize: 16.0, color: Colors.white),
-                        "#${widget.note.category.name}")
+                        "#${widget.note.category.name.toLowerCase()}")
                   ],
                 ),
               ),

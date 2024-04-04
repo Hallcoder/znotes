@@ -37,8 +37,11 @@ class _CustomGridViewState extends State<CustomGridView> {
     fetchNotes();
   }
   void fetchNotes(){
-    for (Note e in filterTestNotes()) {
-      if (testNotes.indexOf(e) % 2 == 0) {
+    firstColumn = [];
+    secondColumn = [];
+    var newNotes = filterTestNotes();
+    for (Note e in newNotes) {
+      if (newNotes.indexOf(e) % 2 == 0) {
         firstColumn.add(buildNoteCard(e));
       } else {
         secondColumn.add(buildNoteCard(e));
@@ -81,12 +84,11 @@ class _CustomGridViewState extends State<CustomGridView> {
         ),
       );
     }
-    return firstColumn.isNotEmpty || secondColumn.isNotEmpty
-        ? SingleChildScrollView(
+    return  SingleChildScrollView(
       child: Column(
         children: [
-          Row(children: optionsDisplayed),
-          Row(children: [
+          Wrap(children: optionsDisplayed),
+          firstColumn.isNotEmpty || secondColumn.isNotEmpty ? Row(children: [
             SizedBox(
               width: columnWidth,
               child: Column(
@@ -99,11 +101,10 @@ class _CustomGridViewState extends State<CustomGridView> {
                 children: secondColumn,
               ),
             )
-          ]),
+          ]) :const Center(child:Text("No notes to show!")),
         ],
       ),
-    )
-        :const Center(child:Text("No notes to show!"));
+    );
   }
 
   NoteCard buildNoteCard(not) {
@@ -141,10 +142,14 @@ class _CustomGridViewState extends State<CustomGridView> {
       print(widget.tab);
       switch (widget.tab["filterProperty"]) {
         case "category":
-          n.category.name == selectedOption ? notes.add(n) : null;
+          n.category.name.toLowerCase() == selectedOption.toLowerCase() ? notes.add(n) : null;
           break;
         case "date":
-          if (selectedOption == "today" &&
+          if(selectedOption == "any") {
+            notes.add(n);
+            break;
+          }
+          else if (selectedOption == "today" &&
               (n.dueDate.day == DateTime
                   .now()
                   .day &&

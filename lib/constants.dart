@@ -16,13 +16,34 @@ List tabs = [
   {"child": "All", "title": const Text("All"),"options":[],"filterProperty":"all"},
   {"child": "Categories", "title": const Text("#Categories"),"options":["work","study","personal"],"filterProperty":"category"},
   {"child": "Completed", "title": const Text("Completed"),"options":[],"filterProperty":"completion"},
-  {"child": "Calendar", "title": const Text("Calendar"),"options":["today","yesterday","tomorrow"],"filterProperty":"date"},
+  {"child": "Calendar", "title": const Text("Calendar"),"options":["any","today","yesterday","tomorrow"],"filterProperty":"date"},
   {"child": "Unsorted", "title": const Text("Unsorted"),"options":[],"filterProperty":"notSorted"}
 ];
 
 List<Widget> renderedTabs = [];
 List<CustomGridView> tabViews = [];
 List<Note> testNotes = [
+  Note(
+    titleDescription:"Task n with description that I want to cut and show less text",
+    category: Category(name: "Personal", color: categoryColors["Personal"] ?? Colors.indigo),
+    color: Colors.blue,
+    isStarred: true,
+    isPinned: false,
+    images: [],
+    videos: [],
+    audios: [],
+    subtasks: [
+      Subtask(title: 'Task 1', checked: false),
+      Subtask(title: 'Task 2', checked: true),
+      Subtask(title: 'Task 2', checked: true),
+      Subtask(title: 'Task 2', checked: true),
+      Subtask(title: 'Task 2', checked: true),
+
+    ],
+    completed: false,
+    dueDate: DateTime(2024, 4, 4),
+    reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
+  ),
   // Existing Note
    Note(
      titleDescription:"Task n with description that I want to cut and show less text",
