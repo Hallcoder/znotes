@@ -186,6 +186,12 @@ class _CustomGridViewState extends State<CustomGridView> {
         case "completion":
           if (n.completed) notes.add(n);
           break;
+        case "favorites":
+          if (n.isStarred) notes.add(n);
+          break;
+        case "unsorted":
+          if(!n.isStarred && !n.isPinned && !n.completed) notes.add(n);
+          break;
         default:
           notes = testNotes;
           break;

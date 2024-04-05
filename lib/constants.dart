@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/utils/content_types.dart';
@@ -12,12 +13,15 @@ Map<String, Color> categoryColors = {
   "Shopping": const Color(0xff34c1fc), // Light purple
   "others": const Color(0xff139c6b), // Light green
 };
+final AudioPlayer audioPlayer = AudioPlayer();
 List tabs = [
   {"child": "All", "title": const Text("All"),"options":[],"filterProperty":"all"},
   {"child": "Categories", "title": const Text("#Categories"),"options":["work","study","personal"],"filterProperty":"category"},
   {"child": "Completed", "title": const Text("Completed"),"options":[],"filterProperty":"completion"},
   {"child": "Calendar", "title": const Text("Calendar"),"options":["any","today","yesterday","tomorrow"],"filterProperty":"date"},
-  {"child": "Unsorted", "title": const Text("Unsorted"),"options":[],"filterProperty":"notSorted"}
+  {"child": "Unsorted", "title": const Text("Unsorted"),"options":[],"filterProperty":"unsorted"},
+  {"child": "Favorites", "title": const Text("Favorites"),"options":[],"filterProperty":"favorites"}
+
 ];
 
 List<Widget> renderedTabs = [];
@@ -38,7 +42,6 @@ List<Note> testNotes = [
       Subtask(title: 'Task 2', checked: true),
       Subtask(title: 'Task 2', checked: true),
       Subtask(title: 'Task 2', checked: true),
-
     ],
     completed: false,
     dueDate: DateTime(2024, 4, 4),

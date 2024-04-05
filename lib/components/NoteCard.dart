@@ -41,7 +41,7 @@ class _NoteCardState extends State<NoteCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {// 50%
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: InkWell(
@@ -52,7 +52,6 @@ class _NoteCardState extends State<NoteCard> {
           showDropDownMenu(context: context);
         },
         child: Container(
-          // width: 150.0,
           decoration: BoxDecoration(
             color: categoryColors[widget.note.category.name],
             borderRadius: widget.note.isPinned

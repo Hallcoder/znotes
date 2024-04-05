@@ -1,8 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/constants.dart';
+import 'package:znotes/routers/router.gr.dart';
+import 'package:znotes/screens/FavoritesScreen.dart';
 
 
 @RoutePage()
@@ -16,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController =
-      TabController(length: 5, vsync: this);
+      TabController(length: tabs.length, vsync: this);
 
   @override
   void dispose() {
@@ -29,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    final AudioPlayer audioPlayer = AudioPlayer();
     for (var tab in tabs) {
       renderedTabs.add(Tab(child: tab["title"]));
       tabViews.add(
@@ -83,10 +85,15 @@ class _HomeScreenState extends State<HomeScreen>
             padding: const EdgeInsets.all(8.0),
             child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-                color: primaryIconColor, Icons.star_border_rounded, size: 32.0),
+          GestureDetector(
+            onTap: (){
+              context.router.push(const FavoritesRoute());
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                  color: primaryIconColor, Icons.star_border_rounded, size: 32.0),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
