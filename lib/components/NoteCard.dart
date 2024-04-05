@@ -20,6 +20,25 @@ class NoteCard extends StatefulWidget {
 class _NoteCardState extends State<NoteCard> {
   TextStyle whiteText = const TextStyle(color: Colors.white);
   DateFormat formatter = DateFormat.yMMMMd('en_US');
+  bool isAudioPlaying = false;
+ @override
+ void dispose() {
+    super.dispose();
+    widget.audioPlayer.stop();
+  }
+  @override
+  void initState() {
+    super.initState();
+    widget.audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
+      if (state == PlayerState.playing) {
+        setState(() {
+          isAudioPlaying = true;
+        });
+      } else if (state == PlayerState.stopped) {
+        isAudioPlaying = false;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +78,7 @@ class _NoteCardState extends State<NoteCard> {
                             : const SizedBox(),
                         widget.note.audios.isEmpty
                             ? const SizedBox()
-                            : const Icon(Icons.play_circle),
+                            : const Icon(Icons.play_arrow_outlined),
                         widget.note.isPinned
                             ? const Icon(
                                 Icons.push_pin_outlined,
@@ -67,7 +86,12 @@ class _NoteCardState extends State<NoteCard> {
                                 color: Color(0xfff8f38e),
                               )
                             : const SizedBox(),
-                            widget.note.subtasks.isEmpty ? const SizedBox(): const Icon(Icons.list_alt)
+                        widget.note.subtasks.isEmpty
+                            ? const SizedBox()
+                            : const Icon(
+                                Icons.view_list_outlined,
+                                color: Colors.white,
+                              )
                       ],
                     ),
                     Text(
@@ -105,10 +129,33 @@ class _NoteCardState extends State<NoteCard> {
     } else if (note.audios.isNotEmpty) {
       return GestureDetector(
         onTap: () async {
-          await widget.audioPlayer
-              .play(AssetSource(widget.note.audios[0].path));
+          if(isAudioPlaying){
+            await widget.audioPlayer.stop();
+            setState(() {
+              isAudioPlaying = false;
+            });
+          }else{
+            await widget.audioPlayer.play(AssetSource(widget.note.audios[0].path));
+            setState(() {
+              isAudioPlaying = true;
+            });
+          }
         },
-        child: const Icon(Icons.audiotrack_rounded),
+        child: Center(
+          child: Container(
+            decoration:
+                BoxDecoration(border: Border.all(), shape: BoxShape.circle),
+            child: !isAudioPlaying
+                ? const Icon(
+                    Icons.play_arrow_outlined,
+                    size: 32.0,
+                  )
+                : const Icon(
+                    Icons.stop_circle_outlined,
+                    size: 32.0,
+                  ),
+          ),
+        ),
       );
     } else if (note.videos.isNotEmpty) {
       final VideoPlayerController videoController =
@@ -160,25 +207,25 @@ class _NoteCardState extends State<NoteCard> {
 
   void showDropDownMenu({required BuildContext context}) {
     final RenderBox button = context.findRenderObject() as RenderBox;
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
 
-    final Offset bottomRightPosition = button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay);
+    final Offset bottomRightPosition = button
+        .localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay);
 
     final RelativeRect position = RelativeRect.fromLTRB(
       bottomRightPosition.dx - 50, // Adjust this value based on the menu width
-      bottomRightPosition.dy - 200, // Adjust this value based on the menu height
+      bottomRightPosition.dy - 200,
+      // Adjust this value based on the menu height
       bottomRightPosition.dx,
       bottomRightPosition.dy,
     );
-    showMenu(
-        context: context,
-        position: position,
-        items: const [
-          PopupMenuItem(child: Text("Completed")),
-          PopupMenuItem(child: Text("Mark as Favorite")),
-          PopupMenuItem(child: Text("Add as widget")),
-          PopupMenuItem(child: Text("Copy note")),
-          PopupMenuItem(child: Text("Pin note"))
-        ]);
+    showMenu(context: context, position: position, items: const [
+      PopupMenuItem(child: Text("Completed")),
+      PopupMenuItem(child: Text("Mark as Favorite")),
+      PopupMenuItem(child: Text("Add as widget")),
+      PopupMenuItem(child: Text("Copy note")),
+      PopupMenuItem(child: Text("Pin note"))
+    ]);
   }
 }
