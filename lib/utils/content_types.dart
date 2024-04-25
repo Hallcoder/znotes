@@ -53,3 +53,9 @@ class ImageContent extends Content{
   ImageContent({required String path}): super(type: ContentType.image, path: path);
 }
 
+class MenuItem{
+  final String title;
+  final  Function(Note n)? doAction;
+  MenuItem(this.title, this.doAction);
+}
+

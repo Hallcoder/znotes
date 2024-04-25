@@ -15,21 +15,52 @@ Map<String, Color> categoryColors = {
 };
 final AudioPlayer audioPlayer = AudioPlayer();
 List tabs = [
-  {"child": "All", "title": const Text("All"),"options":[],"filterProperty":"all"},
-  {"child": "Categories", "title": const Text("#Categories"),"options":["work","study","personal"],"filterProperty":"category"},
-  {"child": "Completed", "title": const Text("Completed"),"options":[],"filterProperty":"completion"},
-  {"child": "Calendar", "title": const Text("Calendar"),"options":["any","today","yesterday","tomorrow"],"filterProperty":"date"},
-  {"child": "Unsorted", "title": const Text("Unsorted"),"options":[],"filterProperty":"unsorted"},
-  {"child": "Favorites", "title": const Text("Favorites"),"options":[],"filterProperty":"favorites"}
-
+  {
+    "child": "All",
+    "title": const Text("All"),
+    "options": [],
+    "filterProperty": "all"
+  },
+  {
+    "child": "Categories",
+    "title": const Text("#Categories"),
+    "options": ["work", "study", "personal"],
+    "filterProperty": "category"
+  },
+  {
+    "child": "Completed",
+    "title": const Text("Completed"),
+    "options": [],
+    "filterProperty": "completion"
+  },
+  {
+    "child": "Calendar",
+    "title": const Text("Calendar"),
+    "options": ["any", "today", "yesterday", "tomorrow"],
+    "filterProperty": "date"
+  },
+  {
+    "child": "Unsorted",
+    "title": const Text("Unsorted"),
+    "options": [],
+    "filterProperty": "unsorted"
+  },
+  {
+    "child": "Favorites",
+    "title": const Text("Favorites"),
+    "options": [],
+    "filterProperty": "favorites"
+  }
 ];
 
 List<Widget> renderedTabs = [];
 List<CustomGridView> tabViews = [];
 List<Note> testNotes = [
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Personal", color: categoryColors["Personal"] ?? Colors.indigo),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category: Category(
+        name: "Personal", color: categoryColors["Personal"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
     isPinned: false,
@@ -48,9 +79,11 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
   ),
   // Existing Note
-   Note(
-     titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+  Note(
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
     isPinned: false,
@@ -63,15 +96,16 @@ List<Note> testNotes = [
       Subtask(title: 'Task 2', checked: true),
       Subtask(title: 'Task 2', checked: true),
       Subtask(title: 'Task 2', checked: true),
-
     ],
     completed: false,
     dueDate: DateTime(2023, 10, 15),
     reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
@@ -87,8 +121,10 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
     isPinned: false,
@@ -100,23 +136,22 @@ List<Note> testNotes = [
     subtasks: [
       Subtask(title: 'Task 1', checked: false),
       Subtask(title: 'Task 2', checked: true),
-
     ],
     completed: false,
     dueDate: DateTime(2023, 10, 15),
     reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
     images: [],
     videos: [],
-    audios: [
-      AudioContent(path: 'audios/stromae.mp3')
-    ],
+    audios: [AudioContent(path: 'audios/stromae.mp3')],
     subtasks: [
       Subtask(title: 'Read Chapter 5', checked: true),
       Subtask(title: 'Complete Assignment', checked: false),
@@ -127,8 +162,11 @@ List<Note> testNotes = [
   ),
   // 4 Additional Notes
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Personal", color: categoryColors["Personal"] ?? Colors.deepPurple),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category: Category(
+        name: "Personal",
+        color: categoryColors["Personal"] ?? Colors.deepPurple),
     color: Colors.red,
     isStarred: false,
     isPinned: true,
@@ -139,22 +177,23 @@ List<Note> testNotes = [
       Subtask(title: 'Call friend', checked: false),
       Subtask(title: 'Book tickets', checked: true),
       Subtask(title: 'Task 2', checked: true),
-
     ],
     completed: true,
     dueDate: DateTime(2023, 10, 12),
     reminders: [DateTime(2023, 10, 8), DateTime(2023, 10, 10)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: const Color(0xff6066f5),
     isStarred: true,
     isPinned: false,
     images: [
-      ImageContent(path:'assets/images/musk.jpg'),
-      ImageContent(path:'assets/images/musk.jpg'),
-      ImageContent(path:'assets/images/musk.jpg')
+      ImageContent(path: 'assets/images/musk.jpg'),
+      ImageContent(path: 'assets/images/musk.jpg'),
+      ImageContent(path: 'assets/images/musk.jpg')
     ],
     videos: [],
     audios: [],
@@ -167,8 +206,10 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: const Color(0xffe46565),
     isStarred: true,
     isPinned: false,
@@ -184,8 +225,10 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Shopping", color: categoryColors["Shopping"] ?? Colors.blueGrey),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category: Category(
+        name: "Shopping", color: categoryColors["Shopping"] ?? Colors.blueGrey),
     color: Colors.teal,
     isStarred: false,
     isPinned: true,
@@ -201,8 +244,10 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 18), DateTime(2023, 10, 19)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category: Category(
+        name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
     color: Colors.blueGrey,
     isStarred: false,
     isPinned: false,
@@ -218,8 +263,10 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 22), DateTime(2023, 10, 24)],
   ),
   Note(
-    titleDescription:"Task n with description that I want to cut and show less text",
-    category: Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    titleDescription:
+        "Task n with description that I want to cut and show less text",
+    category:
+        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
@@ -234,4 +281,15 @@ List<Note> testNotes = [
     dueDate: DateTime(2023, 10, 18),
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
   ),
+];
+
+final List menuOptions = [
+  MenuItem("Completed", (Note n) {
+    print(n);
+  }),
+  MenuItem("Mark as Favorite", (Note n) {}),
+  MenuItem("Add as a widget", (Note n) {}),
+  MenuItem("Copy Note", (Note n) {}),
+  MenuItem("Pin Note", (Note n) {}),
+  MenuItem("Completed", (Note n) {}),
 ];
