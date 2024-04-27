@@ -8,10 +8,25 @@ import 'package:znotes/routers/router.gr.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class NoteCard extends StatefulWidget {
-  const NoteCard({super.key, required this.note, required this.audioPlayer});
+  const NoteCard(
+      {super.key,
+      required this.note,
+      required this.audioPlayer,
+      required this.setNoteComplete,
+      required this.pinNote,
+      required this.copyNote,
+      required this.deleteNote,
+      required this.markNoteAsFavorite,
+      required this.createNoteWidget});
 
   final AudioPlayer audioPlayer;
   final Note note;
+  final void Function(Note n) setNoteComplete;
+  final void Function(Note n) pinNote;
+  final void Function(Note n) copyNote;
+  final void Function(Note n) deleteNote;
+  final void Function(Note n) markNoteAsFavorite;
+  final void Function(Note n) createNoteWidget;
 
   @override
   State<NoteCard> createState() => _NoteCardState();
@@ -21,11 +36,13 @@ class _NoteCardState extends State<NoteCard> {
   TextStyle whiteText = const TextStyle(color: Colors.white);
   DateFormat formatter = DateFormat.yMMMMd('en_US');
   bool isAudioPlaying = false;
- @override
- void dispose() {
+
+  @override
+  void dispose() {
     super.dispose();
     widget.audioPlayer.stop();
   }
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +58,7 @@ class _NoteCardState extends State<NoteCard> {
   }
 
   @override
-  Widget build(BuildContext context) {// 50%
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: InkWell(
@@ -128,13 +145,14 @@ class _NoteCardState extends State<NoteCard> {
     } else if (note.audios.isNotEmpty) {
       return GestureDetector(
         onTap: () async {
-          if(isAudioPlaying){
+          if (isAudioPlaying) {
             await widget.audioPlayer.stop();
             setState(() {
               isAudioPlaying = false;
             });
-          }else{
-            await widget.audioPlayer.play(AssetSource(widget.note.audios[0].path));
+          } else {
+            await widget.audioPlayer
+                .play(AssetSource(widget.note.audios[0].path));
             setState(() {
               isAudioPlaying = true;
             });
@@ -219,12 +237,43 @@ class _NoteCardState extends State<NoteCard> {
       bottomRightPosition.dx,
       bottomRightPosition.dy,
     );
-    showMenu(context: context, position: position, items: const [
-      PopupMenuItem(child: Text("Completed")),
-      PopupMenuItem(child: Text("Mark as Favorite")),
-      PopupMenuItem(child: Text("Add as widget")),
-      PopupMenuItem(child: Text("Copy note")),
-      PopupMenuItem(child: Text("Pin note"))
-    ]);
+
+    showMenu(
+      context: context,
+      position: position,
+      items: menuOptions.map((option) {
+        return PopupMenuItem<MenuItem>(
+          value: option,
+          child: Text(option.title),
+        );
+      }).toList(),
+    ).then((value) {
+      switch (value?.doAction) {
+        case ActionType.setComplete:
+          print(value?.doAction);
+          widget.setNoteComplete(widget.note);
+          break;
+
+        case ActionType.pinNote:
+          widget.pinNote(widget.note);
+          break;
+
+        case ActionType.markNoteAsFavorite:
+          widget.markNoteAsFavorite(widget.note);
+          break;
+
+        case ActionType.copyNote:
+          widget.copyNote(widget.note);
+          break;
+
+        case ActionType.addNoteAsWidget:
+          widget.createNoteWidget(widget.note);
+          break;
+        case ActionType.deleteNote:
+          widget.deleteNote(widget.note);
+        default:
+          break;
+      }
+    });
   }
 }

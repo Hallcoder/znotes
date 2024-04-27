@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/utils/content_types.dart';
 
@@ -283,13 +284,13 @@ List<Note> testNotes = [
   ),
 ];
 
-final List menuOptions = [
-  MenuItem("Completed", (Note n) {
-    print(n);
-  }),
-  MenuItem("Mark as Favorite", (Note n) {}),
-  MenuItem("Add as a widget", (Note n) {}),
-  MenuItem("Copy Note", (Note n) {}),
-  MenuItem("Pin Note", (Note n) {}),
-  MenuItem("Completed", (Note n) {}),
+final List<MenuItem> menuOptions = [
+  MenuItem("Set Completed",ActionType.setComplete, "Success!"),
+  MenuItem("Mark as Favorite",ActionType.markNoteAsFavorite, "Success!"),
+  MenuItem("Add as a widget", ActionType.addNoteAsWidget, "Success!"),
+  MenuItem("Copy Note", ActionType.copyNote, "Success!"),
+  MenuItem("Pin Note", ActionType.pinNote, "Success!"),
+  MenuItem("Delete Note", ActionType.deleteNote, "Success!")
 ];
+
+
