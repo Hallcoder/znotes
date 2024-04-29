@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'package:znotes/constants.dart';
@@ -13,7 +14,7 @@ class NoteCard extends StatefulWidget {
       required this.note,
       required this.audioPlayer,
       required this.setNoteComplete,
-      required this.pinNote,
+      // required this.pinNote,
       required this.copyNote,
       required this.deleteNote,
       required this.markNoteAsFavorite,
@@ -22,7 +23,8 @@ class NoteCard extends StatefulWidget {
   final AudioPlayer audioPlayer;
   final Note note;
   final void Function(Note n) setNoteComplete;
-  final void Function(Note n) pinNote;
+
+  // final void Function(Note n) pinNote;
   final void Function(Note n) copyNote;
   final void Function(Note n) deleteNote;
   final void Function(Note n) markNoteAsFavorite;
@@ -36,6 +38,7 @@ class _NoteCardState extends State<NoteCard> {
   TextStyle whiteText = const TextStyle(color: Colors.white);
   DateFormat formatter = DateFormat.yMMMMd('en_US');
   bool isAudioPlaying = false;
+  late Note currentNote;
 
   @override
   void dispose() {
@@ -46,6 +49,9 @@ class _NoteCardState extends State<NoteCard> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      currentNote = widget.note;
+    });
     widget.audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
       if (state == PlayerState.playing) {
         setState(() {
@@ -255,7 +261,7 @@ class _NoteCardState extends State<NoteCard> {
           break;
 
         case ActionType.pinNote:
-          widget.pinNote(widget.note);
+          pinNote();
           break;
 
         case ActionType.markNoteAsFavorite:
@@ -275,5 +281,15 @@ class _NoteCardState extends State<NoteCard> {
           break;
       }
     });
+  }
+
+  void pinNote() {
+    //pay closer attention when implementing db functionality
+    Note newNote = currentNote;
+    newNote.isPinned = true;
+    setState(() {
+      currentNote = newNote;
+    });
+    Fluttertoast.showToast(msg: "Note Pinned!");
   }
 }

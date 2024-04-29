@@ -118,7 +118,7 @@ class _CustomGridViewState extends State<CustomGridView> {
         note: not,
         audioPlayer: widget.audioPlayer,
         setNoteComplete: setNoteComplete,
-        pinNote: pinNote,
+        // pinNote: pinNote,
         copyNote: copyNote,
         deleteNote: deleteNote,
         markNoteAsFavorite: markNoteAsFavorite,
@@ -214,11 +214,7 @@ class _CustomGridViewState extends State<CustomGridView> {
     Fluttertoast.showToast(msg: "Set complete");
   }
 
-  void pinNote(Note n) {
-    n.isPinned = true;
-    fetchNotes();
-    Fluttertoast.showToast(msg: "Note Pinned!");
-  }
+
 
   void copyNote(Note n) {
     FlutterClipboard.copy(n.titleDescription).then((value) {
@@ -228,10 +224,13 @@ class _CustomGridViewState extends State<CustomGridView> {
 
   void deleteNote(Note n) {
     int index = testNotes.indexOf(n);
-    print("Before delete ${testNotes[index].titleDescription}");
-    if(testNotes.remove(n)){
-      print("After delete ${testNotes[index].titleDescription}");
+    if (index >= 0) {
+      print("Before delete ${testNotes[index].id}");
+      testNotes.remove(n);
+      print("After delete ${testNotes[index].id}");
       Fluttertoast.showToast(msg: "Note deleted");
+    } else {
+      Fluttertoast.showToast(msg: "Note not found!");
     }
   }
 

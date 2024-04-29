@@ -1,11 +1,9 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/routers/router.gr.dart';
-import 'package:znotes/screens/FavoritesScreen.dart';
 
 
 @RoutePage()
@@ -95,6 +93,20 @@ class _HomeScreenState extends State<HomeScreen>
                   color: primaryIconColor, Icons.star_border_rounded, size: 32.0),
             ),
           ),
+          PopupMenuButton(itemBuilder: (context)=>[
+            const PopupMenuItem<String>(
+              value: 'option1',
+              child: Text('Sort by Option 1'),
+            ),
+            const PopupMenuItem<String>(
+            value: 'option2',
+            child: Text('Sort by Option 2'),
+            ),
+            const PopupMenuItem<String>(
+            value: 'option3',
+            child: Text('Sort by Option 3'),
+            ),
+          ]),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child:
