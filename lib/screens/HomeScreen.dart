@@ -2,9 +2,9 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/CustomGridView.dart';
+import 'package:znotes/components/CustomListTile.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/routers/router.gr.dart';
-
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -34,11 +34,10 @@ class _HomeScreenState extends State<HomeScreen>
       renderedTabs.add(Tab(child: tab["title"]));
       tabViews.add(
         CustomGridView(
-          filter: tab["child"],
-          options: tab["options"],
-          audioPlayer: audioPlayer,
-          tab:tab
-        ),
+            filter: tab["child"],
+            options: tab["options"],
+            audioPlayer: audioPlayer,
+            tab: tab),
       );
       // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
@@ -51,15 +50,13 @@ class _HomeScreenState extends State<HomeScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
-            shape:const CircleBorder(),
+            shape: const CircleBorder(),
             backgroundColor: Colors.green,
             child: const Icon(
               Icons.add,
               color: Colors.white,
             ),
-            onPressed: () {
-
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -84,34 +81,18 @@ class _HomeScreenState extends State<HomeScreen>
             child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               context.router.push(const FavoritesRoute());
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Icon(
-                  color: primaryIconColor, Icons.star_border_rounded, size: 32.0),
+                  color: primaryIconColor,
+                  Icons.star_border_rounded,
+                  size: 32.0),
             ),
           ),
-          PopupMenuButton(itemBuilder: (context)=>[
-            const PopupMenuItem<String>(
-              value: 'option1',
-              child: Text('Sort by Option 1'),
-            ),
-            const PopupMenuItem<String>(
-            value: 'option2',
-            child: Text('Sort by Option 2'),
-            ),
-            const PopupMenuItem<String>(
-            value: 'option3',
-            child: Text('Sort by Option 3'),
-            ),
-          ]),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                Icon(color: primaryIconColor, Icons.sort_outlined, size: 32.0),
-          )
+          SortMenu()
         ],
       ),
       body: TabBarView(
@@ -121,3 +102,63 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 }
+
+class SortMenu extends StatelessWidget {
+  const SortMenu({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child:
+          Icon(color: primaryIconColor, Icons.sort_outlined, size: 32.0),
+      onTap: (){
+        showDropdownMenu(context);
+      },
+    );
+  }
+}
+
+
+  Future<dynamic> showDropdownMenu(BuildContext context) {
+    final RenderBox button = context.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+    Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final Offset bottomRightPosition = button
+        .localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay);
+
+    final RelativeRect position = RelativeRect.fromLTRB(
+      bottomRightPosition.dx , // Adjust this value based on the menu width
+      bottomRightPosition.dy + 10,
+      // Adjust this value based on the menu height
+      bottomRightPosition.dx,
+      bottomRightPosition.dy,
+    );
+    return showMenu(
+        context: context,
+        position: position,
+        constraints: const BoxConstraints(
+          maxWidth: 200.0,
+        ),
+        items: const [
+          PopupMenuItem(
+            onTap: (){
+
+            },
+            child: CustomListTile(text: "by date changed", isSelected: true),
+          ),
+          PopupMenuItem(
+            child: CustomListTile(text: "by date added", isSelected: false),
+          ),
+          PopupMenuItem(
+            child: CustomListTile(text: "alphabetical", isSelected: false),
+          ),
+          PopupMenuItem(
+            child:
+                CustomListTile(text: "by scheduled date", isSelected: false),
+          ),
+        ]);
+  }
+

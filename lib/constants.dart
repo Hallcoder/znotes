@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:znotes/components/CustomGridView.dart';
+import 'package:znotes/components/CustomListTile.dart';
 import 'package:znotes/utils/content_types.dart';
 
 var primaryIconColor = Colors.blueGrey;
@@ -59,7 +60,7 @@ List<CustomGridView> tabViews = [];
 List<Note> testNotes = [
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category: Category(
         name: "Personal", color: categoryColors["Personal"] ?? Colors.indigo),
     color: Colors.blue,
@@ -82,9 +83,9 @@ List<Note> testNotes = [
   // Existing Note
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+    Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
     isPinned: false,
@@ -104,9 +105,9 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
@@ -123,9 +124,9 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+    Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
     color: Colors.blue,
     isStarred: true,
     isPinned: false,
@@ -144,9 +145,9 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
@@ -164,7 +165,7 @@ List<Note> testNotes = [
   // 4 Additional Notes
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category: Category(
         name: "Personal",
         color: categoryColors["Personal"] ?? Colors.deepPurple),
@@ -185,9 +186,9 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: const Color(0xff6066f5),
     isStarred: true,
     isPinned: false,
@@ -208,9 +209,9 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: const Color(0xffe46565),
     isStarred: true,
     isPinned: false,
@@ -227,7 +228,7 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category: Category(
         name: "Shopping", color: categoryColors["Shopping"] ?? Colors.blueGrey),
     color: Colors.teal,
@@ -246,7 +247,7 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category: Category(
         name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
     color: Colors.blueGrey,
@@ -265,9 +266,9 @@ List<Note> testNotes = [
   ),
   Note(
     titleDescription:
-        "Task n with description that I want to cut and show less text",
+    "Task n with description that I want to cut and show less text",
     category:
-        Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+    Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,
     isStarred: true,
     isPinned: false,
@@ -285,12 +286,24 @@ List<Note> testNotes = [
 ];
 
 final List<MenuItem> menuOptions = [
-  MenuItem("Set Completed",ActionType.setComplete, "Success!"),
-  MenuItem("Mark as Favorite",ActionType.markNoteAsFavorite, "Success!"),
+  MenuItem("Set Completed", ActionType.setComplete, "Success!"),
+  MenuItem("Mark as Favorite", ActionType.markNoteAsFavorite, "Success!"),
   MenuItem("Add as a widget", ActionType.addNoteAsWidget, "Success!"),
   MenuItem("Copy Note", ActionType.copyNote, "Success!"),
   MenuItem("Pin Note", ActionType.pinNote, "Success!"),
   MenuItem("Delete Note", ActionType.deleteNote, "Success!")
+];
+
+const List<Widget> sortOptions = [
+  PopupMenuItem(
+    child: CustomListTile(text: "by date changed", isSelected: true),),
+  PopupMenuItem(
+    child: CustomListTile(text: "by date added", isSelected: false),
+  ),
+  PopupMenuItem(
+    child: CustomListTile(text: "alphabetical", isSelected: false),),
+  PopupMenuItem(
+    child: CustomListTile(text: "by scheduled date", isSelected: false),),
 ];
 
 
