@@ -133,7 +133,7 @@ class _NoteCardState extends State<NoteCard> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  formatter.format(widget.note.dueDate),
+                  "due ${formatter.format(widget.note.dueDate)}",
                   style: whiteText,
                 ),
               )

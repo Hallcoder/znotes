@@ -13,13 +13,13 @@ class CustomGridView extends StatefulWidget {
       required this.filter,
       required this.audioPlayer,
       required this.options,
-      required this.tab})
+      required this.tab, required this.testNotes})
       : super(key: key);
   final String filter;
   final Map tab;
   final List<dynamic> options;
   final AudioPlayer audioPlayer;
-
+  final List<Note> testNotes;
   @override
   State<CustomGridView> createState() => _CustomGridViewState();
 }
@@ -150,7 +150,7 @@ class _CustomGridViewState extends State<CustomGridView> {
 
   List<Note> filterTestNotes() {
     List<Note> notes = [];
-    for (Note n in testNotes) {
+    for (Note n in widget.testNotes) {
       print(widget.tab);
       switch (widget.tab["filterProperty"]) {
         case "category":
@@ -189,7 +189,7 @@ class _CustomGridViewState extends State<CustomGridView> {
           if (!n.isStarred && !n.isPinned && !n.completed) notes.add(n);
           break;
         default:
-          notes = testNotes;
+          notes = widget.testNotes;
           break;
       }
     }
@@ -197,9 +197,9 @@ class _CustomGridViewState extends State<CustomGridView> {
   }
 
   void updateNote(Note oldNote, Note newNote) {
-    int index = testNotes.indexOf(oldNote);
+    int index = widget.testNotes.indexOf(oldNote);
     if (index > 0) {
-      testNotes[index] = newNote;
+      widget.testNotes[index] = newNote;
     }
     fetchNotes();
   }
@@ -223,11 +223,11 @@ class _CustomGridViewState extends State<CustomGridView> {
   }
 
   void deleteNote(Note n) {
-    int index = testNotes.indexOf(n);
+    int index = widget.testNotes.indexOf(n);
     if (index >= 0) {
-      print("Before delete ${testNotes[index].id}");
-      testNotes.remove(n);
-      print("After delete ${testNotes[index].id}");
+      print("Before delete ${widget.testNotes[index].id}");
+      widget.testNotes.remove(n);
+      print("After delete ${widget.testNotes[index].id}");
       Fluttertoast.showToast(msg: "Note deleted");
     } else {
       Fluttertoast.showToast(msg: "Note not found!");

@@ -23,7 +23,7 @@ class FavoritesPage extends StatelessWidget {
           filter: "Favorites",
           options: const [],
           audioPlayer: audioPlayer,
-          tab:tabs[5]
+          tab:tabs[5], testNotes: testNotes,
       ),
     );
   }

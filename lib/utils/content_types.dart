@@ -16,21 +16,10 @@ class Category {
 
   Category({required this.name, required this.color});
 }
+
 var uuid = const Uuid();
+
 class Note {
-  String id;
-  Category category;
-  Color color;
-  bool isStarred;
-  bool isPinned;
-  String titleDescription;
-  List<ImageContent> images;
-  List<VideoContent> videos;
-  List<AudioContent> audios;
-  List<Subtask> subtasks;
-  bool completed;
-  DateTime dueDate;
-  List<DateTime> reminders;
   Note(
       {required this.titleDescription,
       required this.isStarred,
@@ -43,7 +32,23 @@ class Note {
       required this.subtasks,
       required this.completed,
       required this.dueDate,
-      required this.reminders}):id = uuid.v4();
+      required this.reminders})
+      : id = uuid.v4();
+  final String id;
+  Category category;
+  Color color;
+  bool isStarred;
+  bool isPinned;
+  String titleDescription;
+  List<ImageContent> images;
+  List<VideoContent> videos;
+  List<AudioContent> audios;
+  List<Subtask> subtasks;
+  bool completed;
+  DateTime dueDate;
+  List<DateTime> reminders;
+  late DateTime modifiedDate = DateTime.now();
+  late DateTime createdAt = DateTime.now();
 
   @override
   String toString() {
@@ -73,19 +78,21 @@ class ImageContent extends Content {
       : super(type: ContentType.image, path: path);
 }
 
-  class MenuItem {
-    final String title;
-    final String successMessage;
-    final ActionType doAction;
+class MenuItem {
+  final String title;
+  final String successMessage;
+  final ActionType doAction;
 
-    MenuItem(this.title, this.doAction, this.successMessage);
-  }
+  MenuItem(this.title, this.doAction, this.successMessage);
+}
 
-  enum ActionType{
-    setComplete,
-    copyNote,
-    pinNote,
-    markNoteAsFavorite,
-    addNoteAsWidget,
-    deleteNote
-  }
+enum ActionType {
+  setComplete,
+  copyNote,
+  pinNote,
+  markNoteAsFavorite,
+  addNoteAsWidget,
+  deleteNote
+}
+
+enum SortType { byDateChanged, byDateAdded, byAlphabet, byScheduledDate }

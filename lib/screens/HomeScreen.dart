@@ -1,10 +1,10 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/components/CustomListTile.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/routers/router.gr.dart';
+import 'package:znotes/utils/content_types.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -18,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: tabs.length, vsync: this);
+  late List<Note> sortedNotes;
+  SortType currentSortFilter = SortType.byAlphabet;
 
   @override
   void dispose() {
@@ -27,9 +29,16 @@ class _HomeScreenState extends State<HomeScreen>
     tabViews = [];
   }
 
+  updateSortFilter(SortType newSortFilter) {
+    setState(() {
+      currentSortFilter = newSortFilter;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    sortedNotes = testNotes;
     for (var tab in tabs) {
       renderedTabs.add(Tab(child: tab["title"]));
       tabViews.add(
@@ -37,7 +46,8 @@ class _HomeScreenState extends State<HomeScreen>
             filter: tab["child"],
             options: tab["options"],
             audioPlayer: audioPlayer,
-            tab: tab),
+            tab: tab,
+            testNotes: sortedNotes),
       );
       // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
@@ -92,7 +102,10 @@ class _HomeScreenState extends State<HomeScreen>
                   size: 32.0),
             ),
           ),
-          SortMenu()
+          SortMenu(
+              sortedNotes: sortedNotes,
+              currentSortFilter: currentSortFilter,
+              updateSortFilter: updateSortFilter)
         ],
       ),
       body: TabBarView(
@@ -103,34 +116,69 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
-class SortMenu extends StatelessWidget {
-  const SortMenu({
-    super.key,
-  });
+class SortMenu extends StatefulWidget {
+  const SortMenu(
+      {super.key,
+      required this.sortedNotes,
+      required this.currentSortFilter,
+      required this.updateSortFilter});
+
+  final List<Note> sortedNotes;
+  final SortType currentSortFilter;
+  final Function updateSortFilter;
+
+  @override
+  State<SortMenu> createState() => _SortMenuState();
+}
+
+class _SortMenuState extends State<SortMenu> {
+  void sortNotes() {
+    widget.sortedNotes.sort((a, b) {
+      switch (widget.currentSortFilter) {
+        case SortType.byDateChanged:
+          if (a.modifiedDate.isAfter(b.modifiedDate)) {
+            return -1;
+          } else {
+            return 1;
+          }
+        case SortType.byAlphabet:
+          return a.titleDescription.compareTo(b.titleDescription);
+        case SortType.byDateAdded:
+          if (a.createdAt.isAfter(b.createdAt)) {
+            return -1;
+          } else {
+            return 1;
+          }
+        case SortType.byScheduledDate:
+          if (a.dueDate.isAfter(b.dueDate)) {
+            return -1;
+          } else {
+            return 1;
+          }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child:
-          Icon(color: primaryIconColor, Icons.sort_outlined, size: 32.0),
-      onTap: (){
+      child: Icon(color: primaryIconColor, Icons.sort_outlined, size: 32.0),
+      onTap: () {
         showDropdownMenu(context);
       },
     );
   }
-}
-
 
   Future<dynamic> showDropdownMenu(BuildContext context) {
     final RenderBox button = context.findRenderObject() as RenderBox;
     final RenderBox overlay =
-    Overlay.of(context).context.findRenderObject() as RenderBox;
+        Overlay.of(context).context.findRenderObject() as RenderBox;
 
     final Offset bottomRightPosition = button
         .localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay);
 
     final RelativeRect position = RelativeRect.fromLTRB(
-      bottomRightPosition.dx , // Adjust this value based on the menu width
+      bottomRightPosition.dx, // Adjust this value based on the menu width
       bottomRightPosition.dy + 10,
       // Adjust this value based on the menu height
       bottomRightPosition.dx,
@@ -142,23 +190,45 @@ class SortMenu extends StatelessWidget {
         constraints: const BoxConstraints(
           maxWidth: 200.0,
         ),
-        items: const [
+        items: [
           PopupMenuItem(
-            onTap: (){
-
+            onTap: () {
+              print("Two in one");
+              sortNotes();
+              widget.updateSortFilter(SortType.byDateChanged);
             },
-            child: CustomListTile(text: "by date changed", isSelected: true),
+            child: CustomListTile(
+                text: "by date changed",
+                isSelected: widget.currentSortFilter == SortType.byDateChanged),
           ),
           PopupMenuItem(
-            child: CustomListTile(text: "by date added", isSelected: false),
+            onTap: () {
+              sortNotes();
+              widget.updateSortFilter(SortType.byDateAdded);
+            },
+            child: CustomListTile(
+                text: "by date added",
+                isSelected: widget.currentSortFilter == SortType.byDateAdded),
           ),
           PopupMenuItem(
-            child: CustomListTile(text: "alphabetical", isSelected: false),
+            onTap: () {
+              sortNotes();
+              widget.updateSortFilter(SortType.byAlphabet);
+            },
+            child: CustomListTile(
+                text: "alphabetical",
+                isSelected: widget.currentSortFilter == SortType.byAlphabet),
           ),
           PopupMenuItem(
-            child:
-                CustomListTile(text: "by scheduled date", isSelected: false),
+            onTap: () {
+              sortNotes();
+              widget.updateSortFilter(SortType.byScheduledDate);
+            },
+            child: CustomListTile(
+                text: "by scheduled date",
+                isSelected:
+                    widget.currentSortFilter == SortType.byScheduledDate),
           ),
         ]);
   }
-
+}

@@ -265,8 +265,7 @@ List<Note> testNotes = [
     reminders: [DateTime(2023, 10, 22), DateTime(2023, 10, 24)],
   ),
   Note(
-    titleDescription:
-    "Task n with description that I want to cut and show less text",
+    titleDescription: "Task n with description that I want to cut and show less text",
     category:
     Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
     color: Colors.yellow,

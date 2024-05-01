@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -9,21 +10,19 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         isSelected
-            ? const SizedBox(
-                width: 20.0,
-                child: Icon(
+            ? const Flexible(
+                flex: 3,
+                child:  Icon(
                   Icons.check,
                   color: Colors.green,
                   size: 20.0,
-                ))
+                ),
+              )
             : const SizedBox(),
-        const SizedBox(
-          width: 40.0,
-        ),
-        Text(text, textAlign: TextAlign.start)
+        const Spacer(flex: 1),
+        Expanded(flex:16,child: Text(text))
       ],
     );
   }
