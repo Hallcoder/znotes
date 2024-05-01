@@ -3,8 +3,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:znotes/components/NoteCard.dart';
-import 'package:znotes/constants.dart';
+import 'package:znotes/models/NotesProvider.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class CustomGridView extends StatefulWidget {
@@ -13,13 +14,12 @@ class CustomGridView extends StatefulWidget {
       required this.filter,
       required this.audioPlayer,
       required this.options,
-      required this.tab, required this.testNotes})
+      required this.tab})
       : super(key: key);
   final String filter;
   final Map tab;
   final List<dynamic> options;
   final AudioPlayer audioPlayer;
-  final List<Note> testNotes;
   @override
   State<CustomGridView> createState() => _CustomGridViewState();
 }
@@ -35,28 +35,77 @@ class _CustomGridViewState extends State<CustomGridView> {
     super.initState();
     selectedOption =
         widget.tab["options"].length > 0 ? widget.tab["options"][0] : "all";
-    fetchNotes();
-  }
-
-  void fetchNotes() {
-    firstColumn = [];
-    secondColumn = [];
-    var notes = filterTestNotes();
-    for (Note e in notes) {
-      if (notes.indexOf(e) % 2 == 0) {
-        firstColumn.add(buildNoteCard(e));
-      } else {
-        secondColumn.add(buildNoteCard(e));
-      }
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final notesProvider = Provider.of<NotesModel>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double columnWidthPercentage = 0.5; // 50%
     double columnWidth = columnWidthPercentage * screenWidth;
     List<Widget> optionsDisplayed = [];
+
+    List<Note> filterTestNotes() {
+      List<Note> notes = [];
+      for (Note n in notesProvider.notes) {
+        print(widget.tab);
+        switch (widget.tab["filterProperty"]) {
+          case "category":
+            n.category.name.toLowerCase() == selectedOption.toLowerCase()
+                ? notes.add(n)
+                : null;
+            break;
+          case "date":
+            if (selectedOption == "any") {
+              notes.add(n);
+              break;
+            } else if (selectedOption == "today" &&
+                (n.dueDate.day == DateTime.now().day &&
+                    n.dueDate.month == DateTime.now().month &&
+                    n.dueDate.year == DateTime.now().year)) {
+              notes.add(n);
+            } else if (selectedOption == "tomorrow" &&
+                (n.dueDate.day == DateTime.now().day + 1 &&
+                    n.dueDate.month == DateTime.now().month &&
+                    n.dueDate.year == DateTime.now().year)) {
+              notes.add(n);
+            } else if (selectedOption == "yesterday" &&
+                (n.dueDate.day == DateTime.now().day - 1 &&
+                    n.dueDate.month == DateTime.now().month &&
+                    n.dueDate.year == DateTime.now().year)) {
+              notes.add(n);
+            }
+            break;
+          case "completion":
+            if (n.completed) notes.add(n);
+            break;
+          case "favorites":
+            if (n.isStarred) notes.add(n);
+            break;
+          case "unsorted":
+            if (!n.isStarred && !n.isPinned && !n.completed) notes.add(n);
+            break;
+          default:
+            notes = notesProvider.notes;
+            break;
+        }
+      }
+      return notes;
+    }
+
+    void fetchNotes() {
+      firstColumn = [];
+      secondColumn = [];
+      var notes = filterTestNotes();
+      for (Note e in notes) {
+        if (notes.indexOf(e) % 2 == 0) {
+          firstColumn.add(buildNoteCard(e));
+        } else {
+          secondColumn.add(buildNoteCard(e));
+        }
+      }
+    }
+    fetchNotes();
     for (var i = 0; i < widget.options.length; i++) {
       optionsDisplayed.add(
         InkWell(
@@ -73,7 +122,7 @@ class _CustomGridViewState extends State<CustomGridView> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color:
-                    widget.options[i] == selectedOption ? Colors.black : null,
+                widget.options[i] == selectedOption ? Colors.black : null,
                 border: Border.all(width: 1.0, color: Colors.grey)),
             child: Center(
               child: Text(
@@ -120,7 +169,7 @@ class _CustomGridViewState extends State<CustomGridView> {
         setNoteComplete: setNoteComplete,
         // pinNote: pinNote,
         copyNote: copyNote,
-        deleteNote: deleteNote,
+        // deleteNote: deleteNote,
         markNoteAsFavorite: markNoteAsFavorite,
         createNoteWidget: createNoteWidget);
   }
@@ -148,61 +197,13 @@ class _CustomGridViewState extends State<CustomGridView> {
     return filteredNotes;
   }
 
-  List<Note> filterTestNotes() {
-    List<Note> notes = [];
-    for (Note n in widget.testNotes) {
-      print(widget.tab);
-      switch (widget.tab["filterProperty"]) {
-        case "category":
-          n.category.name.toLowerCase() == selectedOption.toLowerCase()
-              ? notes.add(n)
-              : null;
-          break;
-        case "date":
-          if (selectedOption == "any") {
-            notes.add(n);
-            break;
-          } else if (selectedOption == "today" &&
-              (n.dueDate.day == DateTime.now().day &&
-                  n.dueDate.month == DateTime.now().month &&
-                  n.dueDate.year == DateTime.now().year)) {
-            notes.add(n);
-          } else if (selectedOption == "tomorrow" &&
-              (n.dueDate.day == DateTime.now().day + 1 &&
-                  n.dueDate.month == DateTime.now().month &&
-                  n.dueDate.year == DateTime.now().year)) {
-            notes.add(n);
-          } else if (selectedOption == "yesterday" &&
-              (n.dueDate.day == DateTime.now().day - 1 &&
-                  n.dueDate.month == DateTime.now().month &&
-                  n.dueDate.year == DateTime.now().year)) {
-            notes.add(n);
-          }
-          break;
-        case "completion":
-          if (n.completed) notes.add(n);
-          break;
-        case "favorites":
-          if (n.isStarred) notes.add(n);
-          break;
-        case "unsorted":
-          if (!n.isStarred && !n.isPinned && !n.completed) notes.add(n);
-          break;
-        default:
-          notes = widget.testNotes;
-          break;
-      }
-    }
-    return notes;
-  }
-
-  void updateNote(Note oldNote, Note newNote) {
-    int index = widget.testNotes.indexOf(oldNote);
-    if (index > 0) {
-      widget.testNotes[index] = newNote;
-    }
-    fetchNotes();
-  }
+  // void updateNote(Note oldNote, Note newNote) {
+  //   int index = widget.testNotes.indexOf(oldNote);
+  //   if (index > 0) {
+  //     widget.testNotes[index] = newNote;
+  //   }
+  //   fetchNotes();
+  // }
 
   void markNoteAsFavorite(Note n) {
     n.isStarred = true;
@@ -214,24 +215,21 @@ class _CustomGridViewState extends State<CustomGridView> {
     Fluttertoast.showToast(msg: "Set complete");
   }
 
-
-
+  // void deleteNote(Note n) {
+  //   int index = notesPro.indexOf(n);
+  //   if (index >= 0) {
+  //     print("Before delete ${widget.testNotes[index].id}");
+  //     widget.testNotes.remove(n);
+  //     print("After delete ${widget.testNotes[index].id}");
+  //     Fluttertoast.showToast(msg: "Note deleted");
+  //   } else {
+  //     Fluttertoast.showToast(msg: "Note not found!");
+  //   }
+  // }
   void copyNote(Note n) {
     FlutterClipboard.copy(n.titleDescription).then((value) {
       Fluttertoast.showToast(msg: "Copied to Clipboard");
     });
-  }
-
-  void deleteNote(Note n) {
-    int index = widget.testNotes.indexOf(n);
-    if (index >= 0) {
-      print("Before delete ${widget.testNotes[index].id}");
-      widget.testNotes.remove(n);
-      print("After delete ${widget.testNotes[index].id}");
-      Fluttertoast.showToast(msg: "Note deleted");
-    } else {
-      Fluttertoast.showToast(msg: "Note not found!");
-    }
   }
 
   void createNoteWidget(Note n) {}

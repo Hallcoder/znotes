@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:znotes/models/NotesProvider.dart';
 import 'package:znotes/routers/router.dart';
 
 void main() {
@@ -12,15 +14,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: "OpenSans",
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      routerConfig: _appRouter.config(),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => NotesModel(),
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: "OpenSans",
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        routerConfig: _appRouter.config(),
 
+      ),
     );
   }
 }

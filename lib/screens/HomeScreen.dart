@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/components/CustomListTile.dart';
 import 'package:znotes/constants.dart';
+import 'package:znotes/models/NotesProvider.dart';
 import 'package:znotes/routers/router.gr.dart';
 import 'package:znotes/utils/content_types.dart';
 
@@ -18,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController =
       TabController(length: tabs.length, vsync: this);
-  late List<Note> sortedNotes;
   SortType currentSortFilter = SortType.byAlphabet;
 
   @override
@@ -38,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    sortedNotes = testNotes;
     for (var tab in tabs) {
       renderedTabs.add(Tab(child: tab["title"]));
       tabViews.add(
@@ -46,71 +46,74 @@ class _HomeScreenState extends State<HomeScreen>
             filter: tab["child"],
             options: tab["options"],
             audioPlayer: audioPlayer,
-            tab: tab,
-            testNotes: sortedNotes),
+            tab: tab),
       );
-      // implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
+      // TODO: implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-            shape: const CircleBorder(),
-            backgroundColor: Colors.green,
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
+    final notesProvider = Provider.of<NotesModel>(context);
+    print("Notes from provider: ${notesProvider.notes}");
+    return Consumer<NotesModel>(
+      builder: ,
+      child: Scaffold(
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FloatingActionButton(
+              shape: const CircleBorder(),
+              backgroundColor: Colors.green,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      appBar: AppBar(
-        title: const Text(
-          "Notes",
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w500, fontSize: 28.0),
+          ],
         ),
-        leading: Icon(Icons.menu, color: primaryIconColor),
-        bottom: TabBar(
-            labelColor: Colors.green,
-            labelStyle: const TextStyle(fontSize: 18.0),
-            indicator: const UnderlineTabIndicator(
-                borderSide: BorderSide(width: 4.0, color: Colors.green)),
-            isScrollable: true,
-            controller: _tabController,
-            tabs: renderedTabs),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
+        appBar: AppBar(
+          title: const Text(
+            "Notes",
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.w500, fontSize: 28.0),
           ),
-          GestureDetector(
-            onTap: () {
-              context.router.push(const FavoritesRoute());
-            },
-            child: Padding(
+          leading: Icon(Icons.menu, color: primaryIconColor),
+          bottom: TabBar(
+              labelColor: Colors.green,
+              labelStyle: const TextStyle(fontSize: 18.0),
+              indicator: const UnderlineTabIndicator(
+                  borderSide: BorderSide(width: 4.0, color: Colors.green)),
+              isScrollable: true,
+              controller: _tabController,
+              tabs: renderedTabs),
+          actions: [
+            Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                  color: primaryIconColor,
-                  Icons.star_border_rounded,
-                  size: 32.0),
+              child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
             ),
-          ),
-          SortMenu(
-              sortedNotes: sortedNotes,
-              currentSortFilter: currentSortFilter,
-              updateSortFilter: updateSortFilter)
-        ],
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: tabViews,
+            GestureDetector(
+              onTap: () {
+                context.router.push(const FavoritesRoute());
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                    color: primaryIconColor,
+                    Icons.star_border_rounded,
+                    size: 32.0),
+              ),
+            ),
+            SortMenu(
+                currentSortFilter: currentSortFilter,
+                updateSortFilter: updateSortFilter)
+          ],
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: tabViews,
+        ),
       ),
     );
   }
@@ -119,11 +122,9 @@ class _HomeScreenState extends State<HomeScreen>
 class SortMenu extends StatefulWidget {
   const SortMenu(
       {super.key,
-      required this.sortedNotes,
       required this.currentSortFilter,
       required this.updateSortFilter});
 
-  final List<Note> sortedNotes;
   final SortType currentSortFilter;
   final Function updateSortFilter;
 
@@ -132,33 +133,6 @@ class SortMenu extends StatefulWidget {
 }
 
 class _SortMenuState extends State<SortMenu> {
-  void sortNotes() {
-    widget.sortedNotes.sort((a, b) {
-      switch (widget.currentSortFilter) {
-        case SortType.byDateChanged:
-          if (a.modifiedDate.isAfter(b.modifiedDate)) {
-            return -1;
-          } else {
-            return 1;
-          }
-        case SortType.byAlphabet:
-          return a.titleDescription.compareTo(b.titleDescription);
-        case SortType.byDateAdded:
-          if (a.createdAt.isAfter(b.createdAt)) {
-            return -1;
-          } else {
-            return 1;
-          }
-        case SortType.byScheduledDate:
-          if (a.dueDate.isAfter(b.dueDate)) {
-            return -1;
-          } else {
-            return 1;
-          }
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -184,6 +158,7 @@ class _SortMenuState extends State<SortMenu> {
       bottomRightPosition.dx,
       bottomRightPosition.dy,
     );
+    final notesProvider = Provider.of<NotesModel>(context);
     return showMenu(
         context: context,
         position: position,
@@ -193,41 +168,48 @@ class _SortMenuState extends State<SortMenu> {
         items: [
           PopupMenuItem(
             onTap: () {
-              print("Two in one");
-              sortNotes();
-              widget.updateSortFilter(SortType.byDateChanged);
+              print("Before :${notesProvider.notes}");
+              notesProvider.sortNotes(SortType.byDateChanged);
+              print("After :${notesProvider.notes}");
+              notesProvider.updateCurrentSortFilter(SortType.byDateChanged);
             },
             child: CustomListTile(
                 text: "by date changed",
-                isSelected: widget.currentSortFilter == SortType.byDateChanged),
+                isSelected:
+                    notesProvider.currentSortFilter == SortType.byDateChanged),
           ),
           PopupMenuItem(
             onTap: () {
-              sortNotes();
-              widget.updateSortFilter(SortType.byDateAdded);
+              notesProvider.sortNotes(SortType.byDateAdded);
+              print(notesProvider.notes);
+              notesProvider.updateCurrentSortFilter(SortType.byDateAdded);
             },
             child: CustomListTile(
                 text: "by date added",
-                isSelected: widget.currentSortFilter == SortType.byDateAdded),
+                isSelected:
+                    notesProvider.currentSortFilter == SortType.byDateAdded),
           ),
           PopupMenuItem(
             onTap: () {
-              sortNotes();
-              widget.updateSortFilter(SortType.byAlphabet);
+              notesProvider.sortNotes(SortType.byAlphabet);
+              print(notesProvider.notes);
+              notesProvider.updateCurrentSortFilter(SortType.byAlphabet);
             },
             child: CustomListTile(
                 text: "alphabetical",
-                isSelected: widget.currentSortFilter == SortType.byAlphabet),
+                isSelected:
+                    notesProvider.currentSortFilter == SortType.byAlphabet),
           ),
           PopupMenuItem(
             onTap: () {
-              sortNotes();
-              widget.updateSortFilter(SortType.byScheduledDate);
+              notesProvider.sortNotes(SortType.byScheduledDate);
+              print(notesProvider.notes);
+              notesProvider.updateCurrentSortFilter(SortType.byScheduledDate);
             },
             child: CustomListTile(
                 text: "by scheduled date",
-                isSelected:
-                    widget.currentSortFilter == SortType.byScheduledDate),
+                isSelected: notesProvider.currentSortFilter ==
+                    SortType.byScheduledDate),
           ),
         ]);
   }

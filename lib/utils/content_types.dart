@@ -52,7 +52,7 @@ class Note {
 
   @override
   String toString() {
-    return "This note is described as '$titleDescription'";
+    return "This note's id is ['$id']";
   }
 }
 

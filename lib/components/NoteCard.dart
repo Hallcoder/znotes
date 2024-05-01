@@ -16,7 +16,7 @@ class NoteCard extends StatefulWidget {
       required this.setNoteComplete,
       // required this.pinNote,
       required this.copyNote,
-      required this.deleteNote,
+      // required this.deleteNote,
       required this.markNoteAsFavorite,
       required this.createNoteWidget});
 
@@ -26,7 +26,7 @@ class NoteCard extends StatefulWidget {
 
   // final void Function(Note n) pinNote;
   final void Function(Note n) copyNote;
-  final void Function(Note n) deleteNote;
+  // final void Function(Note n) deleteNote;
   final void Function(Note n) markNoteAsFavorite;
   final void Function(Note n) createNoteWidget;
 
@@ -275,8 +275,8 @@ class _NoteCardState extends State<NoteCard> {
         case ActionType.addNoteAsWidget:
           widget.createNoteWidget(widget.note);
           break;
-        case ActionType.deleteNote:
-          widget.deleteNote(widget.note);
+        // case ActionType.deleteNote:
+        //   widget.deleteNote(widget.note);
         default:
           break;
       }
