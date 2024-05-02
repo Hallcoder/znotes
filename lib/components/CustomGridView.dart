@@ -20,6 +20,7 @@ class CustomGridView extends StatefulWidget {
   final Map tab;
   final List<dynamic> options;
   final AudioPlayer audioPlayer;
+
   @override
   State<CustomGridView> createState() => _CustomGridViewState();
 }
@@ -47,7 +48,7 @@ class _CustomGridViewState extends State<CustomGridView> {
 
     List<Note> filterTestNotes() {
       List<Note> notes = [];
-      for (Note n in notesProvider.notes) {
+      for (Note n in !notesProvider.isSearching ? notesProvider.notes:notesProvider.searchedNotes) {
         print(widget.tab);
         switch (widget.tab["filterProperty"]) {
           case "category":
@@ -105,6 +106,7 @@ class _CustomGridViewState extends State<CustomGridView> {
         }
       }
     }
+
     fetchNotes();
     for (var i = 0; i < widget.options.length; i++) {
       optionsDisplayed.add(
@@ -122,7 +124,7 @@ class _CustomGridViewState extends State<CustomGridView> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color:
-                widget.options[i] == selectedOption ? Colors.black : null,
+                    widget.options[i] == selectedOption ? Colors.black : null,
                 border: Border.all(width: 1.0, color: Colors.grey)),
             child: Center(
               child: Text(

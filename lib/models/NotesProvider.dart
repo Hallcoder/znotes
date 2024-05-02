@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:znotes/constants.dart';
 import 'package:znotes/utils/content_types.dart';
 
-class NotesModel with ChangeNotifier{
+class NotesModel with ChangeNotifier {
   final List<Note> _notes = [
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
+          "Task n with description that I want to cut and show less text",
       category: Category(
           name: "Personal", color: categoryColors["Personal"] ?? Colors.indigo),
       color: Colors.blue,
@@ -29,9 +29,9 @@ class NotesModel with ChangeNotifier{
     // Existing Note
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "work", color: categoryColors["work"] ?? Colors.indigo),
       color: Colors.blue,
       isStarred: true,
       isPinned: false,
@@ -51,9 +51,9 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "Study", color: categoryColors["Study"] ?? Colors.amber),
       color: Colors.yellow,
       isStarred: true,
       isPinned: false,
@@ -70,9 +70,9 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "work", color: categoryColors["work"] ?? Colors.indigo),
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "work", color: categoryColors["work"] ?? Colors.indigo),
       color: Colors.blue,
       isStarred: true,
       isPinned: false,
@@ -91,9 +91,9 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "Study", color: categoryColors["Study"] ?? Colors.amber),
       color: Colors.yellow,
       isStarred: true,
       isPinned: false,
@@ -111,7 +111,7 @@ class NotesModel with ChangeNotifier{
     // 4 Additional Notes
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
+          "Task n with description that I want to cut and show less text",
       category: Category(
           name: "Personal",
           color: categoryColors["Personal"] ?? Colors.deepPurple),
@@ -132,9 +132,9 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "Study", color: categoryColors["Study"] ?? Colors.amber),
       color: const Color(0xff6066f5),
       isStarred: true,
       isPinned: false,
@@ -155,9 +155,9 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "Study", color: categoryColors["Study"] ?? Colors.amber),
       color: const Color(0xffe46565),
       isStarred: true,
       isPinned: false,
@@ -174,9 +174,10 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
+          "Task n with description that I want to cut and show less text",
       category: Category(
-          name: "Shopping", color: categoryColors["Shopping"] ?? Colors.blueGrey),
+          name: "Shopping",
+          color: categoryColors["Shopping"] ?? Colors.blueGrey),
       color: Colors.teal,
       isStarred: false,
       isPinned: true,
@@ -193,7 +194,7 @@ class NotesModel with ChangeNotifier{
     ),
     Note(
       titleDescription:
-      "Task n with description that I want to cut and show less text",
+          "Task n with description that I want to cut and show less text",
       category: Category(
           name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
       color: Colors.blueGrey,
@@ -211,9 +212,10 @@ class NotesModel with ChangeNotifier{
       reminders: [DateTime(2023, 10, 22), DateTime(2023, 10, 24)],
     ),
     Note(
-      titleDescription: "Task n with description that I want to cut and show less text",
-      category:
-      Category(name: "Study", color: categoryColors["Study"] ?? Colors.amber),
+      titleDescription:
+          "Task n with description that I want to cut and show less text",
+      category: Category(
+          name: "Study", color: categoryColors["Study"] ?? Colors.amber),
       color: Colors.yellow,
       isStarred: true,
       isPinned: false,
@@ -229,27 +231,61 @@ class NotesModel with ChangeNotifier{
       reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
     ),
   ];
+  List<Note> _searchedNotes = [];
+
+  List<Note> get searchedNotes => _searchedNotes;
+  bool _isSearching = false;
+
+  bool get isSearching => _isSearching;
 
   SortType _currentSortFilter = SortType.byScheduledDate;
+
   SortType get currentSortFilter => _currentSortFilter;
+
   List<Note> get notes => _notes;
-  void updateCurrentSortFilter(SortType sortFilter){
+
+  void updateCurrentSortFilter(SortType sortFilter) {
     _currentSortFilter = sortFilter;
     notifyListeners();
   }
-  void addNote(Note n){
+
+  void searchNotes(String searchKey) {
+    List<Note> filteredNotes = [];
+    notes.map((n) {
+
+    });
+    for(int i = 0;i<notes.length;i++){
+      Note n = notes[i];
+      print("searching notes $notes");
+      print(
+          "${n.titleDescription} contains $searchKey=${n.titleDescription.toLowerCase().contains(searchKey.toLowerCase())}");
+      if (n.titleDescription.toLowerCase().contains(searchKey.toLowerCase())) {
+        filteredNotes.add(n);
+      }
+    }
+    print("FilteredNotes $filteredNotes");
+    _searchedNotes = filteredNotes;
+    notifyListeners();
+  }
+
+  void addNote(Note n) {
     _notes.add(n);
     notifyListeners();
   }
 
-  void removeNote(Note n){
+  void updateSearching() {
+    _isSearching = !_isSearching;
+    notifyListeners();
+  }
+
+  void removeNote(Note n) {
     _notes.remove(n);
     notifyListeners();
   }
 
   void sortNotes(SortType currentSortFilter) {
     notes.sort((a, b) {
-      switch(currentSortFilter){
+      switch (currentSortFilter) {
         case SortType.byDateChanged:
           if (a.modifiedDate.isAfter(b.modifiedDate)) {
             return -1;

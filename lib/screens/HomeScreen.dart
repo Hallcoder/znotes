@@ -21,20 +21,13 @@ class _HomeScreenState extends State<HomeScreen>
   late final TabController _tabController =
       TabController(length: tabs.length, vsync: this);
   SortType currentSortFilter = SortType.byAlphabet;
-  bool isSearching = false;
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-    renderedTabs = [];
-    tabViews = [];
-  }
 
   updateSortFilter(SortType newSortFilter) {
     setState(() {
       currentSortFilter = newSortFilter;
     });
   }
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -48,15 +41,33 @@ class _HomeScreenState extends State<HomeScreen>
             audioPlayer: audioPlayer,
             tab: tab),
       );
+      searchController.addListener(_onSearchTextChanged);
       // TODO: implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
+  }
+  @override
+  void dispose() {
+    _tabController.dispose();
+    searchController.dispose();
+    super.dispose();
+    renderedTabs = [];
+    tabViews = [];
+  }
+  void _onSearchTextChanged() {
+    // Get access to the NotesModel using Provider
+    final notesModel = Provider.of<NotesModel>(context, listen: false);
+
+    // Call the searchNotes method with the new text value
+    notesModel.searchNotes(searchController.text);
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchController = TextEditingController();
     final notesProvider = Provider.of<NotesModel>(context);
     print("Notes from provider: ${notesProvider.notes}");
+    void searchNotes(String val){
+      notesProvider.searchNotes(val);
+    }
     return Scaffold(
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -73,25 +84,29 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
       appBar: AppBar(
-        title: isSearching? TextField(
-          controller: searchController,
-          onChanged: (val){
-            print("Searching based on $val");
-          },
-          decoration: const InputDecoration(
-            hintText: 'Search notes...',
-            border: InputBorder.none,
-          ),
-        ): const Text(
-          "Notes",
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w500, fontSize: 28.0),
-        ),
-        leading: isSearching ? GestureDetector(onTap:(){
-          setState(() {
-            isSearching = !isSearching;
-          });
-        },child: const Icon(Icons.arrow_back)): Icon(Icons.menu, color: primaryIconColor),
+        title: notesProvider.isSearching
+            ? TextField(
+                controller: searchController,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Search notes...',
+                  border: InputBorder.none,
+                ),
+              )
+            : const Text(
+                "Notes",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 28.0),
+              ),
+        leading: notesProvider.isSearching
+            ? GestureDetector(
+                onTap: () {
+                 notesProvider.updateSearching();
+                },
+                child: const Icon(Icons.arrow_back))
+            : Icon(Icons.menu, color: primaryIconColor),
         bottom: TabBar(
             labelColor: Colors.green,
             labelStyle: const TextStyle(fontSize: 18.0),
@@ -100,32 +115,34 @@ class _HomeScreenState extends State<HomeScreen>
             isScrollable: true,
             controller: _tabController,
             tabs: renderedTabs),
-        actions: isSearching ? []:[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(onTap:(){
-              setState(() {
-                isSearching = !isSearching;
-              });
-            },
-            child: Icon(color: primaryIconColor, Icons.search, size: 32.0)),
-          ),
-          GestureDetector(
-            onTap: () {
-              context.router.push(const FavoritesRoute());
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                  color: primaryIconColor,
-                  Icons.star_border_rounded,
-                  size: 32.0),
-            ),
-          ),
-          SortMenu(
-              currentSortFilter: currentSortFilter,
-              updateSortFilter: updateSortFilter)
-        ],
+        actions: notesProvider.isSearching
+            ? []
+            : [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        notesProvider.updateSearching();
+                      },
+                      child: Icon(
+                          color: primaryIconColor, Icons.search, size: 32.0)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.router.push(const FavoritesRoute());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                        color: primaryIconColor,
+                        Icons.star_border_rounded,
+                        size: 32.0),
+                  ),
+                ),
+                SortMenu(
+                    currentSortFilter: currentSortFilter,
+                    updateSortFilter: updateSortFilter)
+              ],
       ),
       body: TabBarView(
         controller: _tabController,
@@ -174,7 +191,7 @@ class _SortMenuState extends State<SortMenu> {
       bottomRightPosition.dx,
       bottomRightPosition.dy,
     );
-    final notesProvider = Provider.of<NotesModel>(context,listen:false);
+    final notesProvider = Provider.of<NotesModel>(context, listen: false);
     return showMenu(
         context: context,
         position: position,
