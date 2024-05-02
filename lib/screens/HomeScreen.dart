@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen>
   late final TabController _tabController =
       TabController(length: tabs.length, vsync: this);
   SortType currentSortFilter = SortType.byAlphabet;
-
+  bool isSearching = false;
   @override
   void dispose() {
     _tabController.dispose();
@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = TextEditingController();
     final notesProvider = Provider.of<NotesModel>(context);
     print("Notes from provider: ${notesProvider.notes}");
     return Scaffold(
@@ -72,12 +73,25 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
       appBar: AppBar(
-        title: const Text(
+        title: isSearching? TextField(
+          controller: searchController,
+          onChanged: (val){
+            print("Searching based on $val");
+          },
+          decoration: const InputDecoration(
+            hintText: 'Search notes...',
+            border: InputBorder.none,
+          ),
+        ): const Text(
           "Notes",
           style: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w500, fontSize: 28.0),
         ),
-        leading: Icon(Icons.menu, color: primaryIconColor),
+        leading: isSearching ? GestureDetector(onTap:(){
+          setState(() {
+            isSearching = !isSearching;
+          });
+        },child: const Icon(Icons.arrow_back)): Icon(Icons.menu, color: primaryIconColor),
         bottom: TabBar(
             labelColor: Colors.green,
             labelStyle: const TextStyle(fontSize: 18.0),
@@ -86,10 +100,15 @@ class _HomeScreenState extends State<HomeScreen>
             isScrollable: true,
             controller: _tabController,
             tabs: renderedTabs),
-        actions: [
+        actions: isSearching ? []:[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
+            child: GestureDetector(onTap:(){
+              setState(() {
+                isSearching = !isSearching;
+              });
+            },
+            child: Icon(color: primaryIconColor, Icons.search, size: 32.0)),
           ),
           GestureDetector(
             onTap: () {
