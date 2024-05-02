@@ -56,64 +56,61 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     final notesProvider = Provider.of<NotesModel>(context);
     print("Notes from provider: ${notesProvider.notes}");
-    return Consumer<NotesModel>(
-      builder: ,
-      child: Scaffold(
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FloatingActionButton(
-              shape: const CircleBorder(),
-              backgroundColor: Colors.green,
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              onPressed: () {},
+    return Scaffold(
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton(
+            shape: const CircleBorder(),
+            backgroundColor: Colors.green,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
             ),
-          ],
-        ),
-        appBar: AppBar(
-          title: const Text(
-            "Notes",
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w500, fontSize: 28.0),
+            onPressed: () {},
           ),
-          leading: Icon(Icons.menu, color: primaryIconColor),
-          bottom: TabBar(
-              labelColor: Colors.green,
-              labelStyle: const TextStyle(fontSize: 18.0),
-              indicator: const UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 4.0, color: Colors.green)),
-              isScrollable: true,
-              controller: _tabController,
-              tabs: renderedTabs),
-          actions: [
-            Padding(
+        ],
+      ),
+      appBar: AppBar(
+        title: const Text(
+          "Notes",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w500, fontSize: 28.0),
+        ),
+        leading: Icon(Icons.menu, color: primaryIconColor),
+        bottom: TabBar(
+            labelColor: Colors.green,
+            labelStyle: const TextStyle(fontSize: 18.0),
+            indicator: const UnderlineTabIndicator(
+                borderSide: BorderSide(width: 4.0, color: Colors.green)),
+            isScrollable: true,
+            controller: _tabController,
+            tabs: renderedTabs),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
+          ),
+          GestureDetector(
+            onTap: () {
+              context.router.push(const FavoritesRoute());
+            },
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(color: primaryIconColor, Icons.search, size: 32.0),
+              child: Icon(
+                  color: primaryIconColor,
+                  Icons.star_border_rounded,
+                  size: 32.0),
             ),
-            GestureDetector(
-              onTap: () {
-                context.router.push(const FavoritesRoute());
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                    color: primaryIconColor,
-                    Icons.star_border_rounded,
-                    size: 32.0),
-              ),
-            ),
-            SortMenu(
-                currentSortFilter: currentSortFilter,
-                updateSortFilter: updateSortFilter)
-          ],
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: tabViews,
-        ),
+          ),
+          SortMenu(
+              currentSortFilter: currentSortFilter,
+              updateSortFilter: updateSortFilter)
+        ],
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: tabViews,
       ),
     );
   }
@@ -158,7 +155,7 @@ class _SortMenuState extends State<SortMenu> {
       bottomRightPosition.dx,
       bottomRightPosition.dy,
     );
-    final notesProvider = Provider.of<NotesModel>(context);
+    final notesProvider = Provider.of<NotesModel>(context,listen:false);
     return showMenu(
         context: context,
         position: position,

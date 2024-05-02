@@ -265,7 +265,7 @@ class NotesModel with ChangeNotifier{
             return 1;
           }
         case SortType.byScheduledDate:
-          if (a.dueDate.isAfter(b.dueDate)) {
+          if (a.dueDate.isBefore(b.dueDate)) {
             return -1;
           } else {
             return 1;
