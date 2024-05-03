@@ -38,7 +38,7 @@ List tabs = [
   {
     "child": "Calendar",
     "title": const Text("Calendar"),
-    "options": ["any", "today", "yesterday", "tomorrow"],
+    "options": ["any", "today","tomorrow","Set date"],
     "filterProperty": "date"
   },
   {

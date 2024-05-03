@@ -75,7 +75,7 @@ class _NoteCardState extends State<NoteCard> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: categoryColors[widget.note.category.name],
+            color: widget.note.category.color,
             borderRadius: widget.note.isPinned
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(12.0),

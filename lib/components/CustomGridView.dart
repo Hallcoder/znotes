@@ -45,6 +45,8 @@ class _CustomGridViewState extends State<CustomGridView> {
     double columnWidthPercentage = 0.5; // 50%
     double columnWidth = columnWidthPercentage * screenWidth;
     List<Widget> optionsDisplayed = [];
+
+
     List<Note> filterTestNotes() {
       List<Note> notes = [];
       for (Note n in !notesProvider.isSearching
@@ -75,6 +77,8 @@ class _CustomGridViewState extends State<CustomGridView> {
                     n.dueDate.month == DateTime.now().month &&
                     n.dueDate.year == DateTime.now().year)) {
               notes.add(n);
+            } else if (selectedOption == "Set date") {
+              showDateTimePicker(context);
             }
             break;
           case "completion":
@@ -164,8 +168,22 @@ class _CustomGridViewState extends State<CustomGridView> {
         ],
       ),
     );
-  }
 
+  }
+  Future<void> showDateTimePicker(BuildContext context) async {
+    Future.delayed(const Duration(seconds: 5));
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2025),
+    );
+
+    if (pickedDate != null) {
+      // Handle the selected date
+      print('Selected date: $pickedDate');
+    }
+  }
   NoteCard buildNoteCard(not) {
     return NoteCard(
         note: not,

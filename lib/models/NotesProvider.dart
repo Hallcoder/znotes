@@ -195,8 +195,7 @@ class NotesModel with ChangeNotifier {
     Note(
       titleDescription:
           "Task n with description that I want to cut and show less text",
-      category: Category(
-          name: "Others", color: categoryColors["Others"] ?? Colors.blueAccent),
+      category: Category(name: "Others", color: categoryColors["others"]!),
       color: Colors.blueGrey,
       isStarred: false,
       isPinned: false,
@@ -249,7 +248,7 @@ class NotesModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchNotes(String searchKey) {
+  void searchNotes2(String searchKey) {
     List<Note> filteredNotes = [];
 
     for (int i = 0; i < notes.length; i++) {
@@ -266,7 +265,7 @@ class NotesModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchNotes2(String searchKey) {
+  void searchNotes(String searchKey) {
     print("The searchKey is $searchKey");
     List<Note> filteredNotes = [];
 
