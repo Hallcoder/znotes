@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
       currentSortFilter = newSortFilter;
     });
   }
+
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -45,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
       // TODO: implement so the GridView custom component receives arguments that tell it which notes to load from SharedPreferences and show.
     }
   }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -53,10 +55,11 @@ class _HomeScreenState extends State<HomeScreen>
     renderedTabs = [];
     tabViews = [];
   }
-  void _onSearchTextChanged() {
-    // Get access to the NotesModel using Provider
-    final notesModel = Provider.of<NotesModel>(context, listen: false);
 
+  void _onSearchTextChanged() {
+    final notesModel = Provider.of<NotesModel>(context, listen: false);
+    // Get access to the NotesModel using Provider
+    print("Text changing...");
     // Call the searchNotes method with the new text value
     notesModel.searchNotes(searchController.text);
   }
@@ -64,91 +67,89 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final notesProvider = Provider.of<NotesModel>(context);
-    print("Notes from provider: ${notesProvider.notes}");
-    void searchNotes(String val){
-      notesProvider.searchNotes(val);
-    }
     return Scaffold(
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-            shape: const CircleBorder(),
-            backgroundColor: Colors.green,
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      appBar: AppBar(
-        title: notesProvider.isSearching
-            ? TextField(
-                controller: searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Search notes...',
-                  border: InputBorder.none,
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FloatingActionButton(
+                shape: const CircleBorder(),
+                backgroundColor: Colors.green,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
                 ),
-              )
-            : const Text(
-                "Notes",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 28.0),
+                onPressed: () {},
               ),
-        leading: notesProvider.isSearching
-            ? GestureDetector(
-                onTap: () {
-                 notesProvider.updateSearching();
-                },
-                child: const Icon(Icons.arrow_back))
-            : Icon(Icons.menu, color: primaryIconColor),
-        bottom: TabBar(
-            labelColor: Colors.green,
-            labelStyle: const TextStyle(fontSize: 18.0),
-            indicator: const UnderlineTabIndicator(
-                borderSide: BorderSide(width: 4.0, color: Colors.green)),
-            isScrollable: true,
-            controller: _tabController,
-            tabs: renderedTabs),
-        actions: notesProvider.isSearching
-            ? []
-            : [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        notesProvider.updateSearching();
-                      },
-                      child: Icon(
-                          color: primaryIconColor, Icons.search, size: 32.0)),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.router.push(const FavoritesRoute());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                        color: primaryIconColor,
-                        Icons.star_border_rounded,
-                        size: 32.0),
+            ],
+          ),
+          appBar: AppBar(
+            title: notesProvider.isSearching
+                ? TextField(
+                    controller: searchController,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Search notes...',
+                      border: InputBorder.none,
+                    ),
+                  )
+                : const Text(
+                    "Notes",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 28.0),
                   ),
-                ),
-                SortMenu(
-                    currentSortFilter: currentSortFilter,
-                    updateSortFilter: updateSortFilter)
-              ],
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: tabViews,
-      ),
-    );
+            leading: notesProvider.isSearching
+                ? GestureDetector(
+                    onTap: () {
+                      notesProvider.updateSearching();
+                    },
+                    child: const Icon(Icons.arrow_back))
+                : Icon(Icons.menu, color: primaryIconColor),
+            bottom: TabBar(
+                labelColor: Colors.green,
+                labelStyle: const TextStyle(fontSize: 18.0),
+                indicator: const UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 4.0, color: Colors.green)),
+                isScrollable: true,
+                controller: _tabController,
+                tabs: renderedTabs),
+            actions: notesProvider.isSearching
+                ? []
+                : [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                          onTap: () {
+                            notesProvider.updateSearching();
+                          },
+                          child: Icon(
+                              color: primaryIconColor,
+                              Icons.search,
+                              size: 32.0)),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.router.push(const FavoritesRoute());
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                            color: primaryIconColor,
+                            Icons.star_border_rounded,
+                            size: 32.0),
+                      ),
+                    ),
+                    SortMenu(
+                        currentSortFilter: currentSortFilter,
+                        updateSortFilter: updateSortFilter)
+                  ],
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: tabViews,
+          ),
+        );
   }
 }
 

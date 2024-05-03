@@ -17,7 +17,6 @@ class NoteCard extends StatefulWidget {
       // required this.pinNote,
       required this.copyNote,
       // required this.deleteNote,
-      required this.markNoteAsFavorite,
       required this.createNoteWidget});
 
   final AudioPlayer audioPlayer;
@@ -26,8 +25,8 @@ class NoteCard extends StatefulWidget {
 
   // final void Function(Note n) pinNote;
   final void Function(Note n) copyNote;
+
   // final void Function(Note n) deleteNote;
-  final void Function(Note n) markNoteAsFavorite;
   final void Function(Note n) createNoteWidget;
 
   @override
@@ -265,13 +264,12 @@ class _NoteCardState extends State<NoteCard> {
           break;
 
         case ActionType.markNoteAsFavorite:
-          widget.markNoteAsFavorite(widget.note);
+          markNoteAsFavorite();
           break;
 
         case ActionType.copyNote:
           widget.copyNote(widget.note);
           break;
-
         case ActionType.addNoteAsWidget:
           widget.createNoteWidget(widget.note);
           break;
@@ -291,5 +289,14 @@ class _NoteCardState extends State<NoteCard> {
       currentNote = newNote;
     });
     Fluttertoast.showToast(msg: "Note Pinned!");
+  }
+
+  void markNoteAsFavorite() {
+    Note newNote = currentNote;
+    newNote.isStarred = true;
+    setState(() {
+      currentNote = newNote;
+    });
+    Fluttertoast.showToast(msg: "Marked Favorite!");
   }
 }

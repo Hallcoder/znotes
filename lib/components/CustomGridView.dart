@@ -40,16 +40,16 @@ class _CustomGridViewState extends State<CustomGridView> {
 
   @override
   Widget build(BuildContext context) {
-    final notesProvider = Provider.of<NotesModel>(context);
+    var notesProvider = Provider.of<NotesModel>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double columnWidthPercentage = 0.5; // 50%
     double columnWidth = columnWidthPercentage * screenWidth;
     List<Widget> optionsDisplayed = [];
-
     List<Note> filterTestNotes() {
       List<Note> notes = [];
-      for (Note n in !notesProvider.isSearching ? notesProvider.notes:notesProvider.searchedNotes) {
-        print(widget.tab);
+      for (Note n in !notesProvider.isSearching
+          ? notesProvider.notes
+          : notesProvider.searchedNotes) {
         switch (widget.tab["filterProperty"]) {
           case "category":
             n.category.name.toLowerCase() == selectedOption.toLowerCase()
@@ -87,7 +87,9 @@ class _CustomGridViewState extends State<CustomGridView> {
             if (!n.isStarred && !n.isPinned && !n.completed) notes.add(n);
             break;
           default:
-            notes = notesProvider.notes;
+            notes = notesProvider.isSearching
+                ? notesProvider.searchedNotes
+                : notesProvider.notes;
             break;
         }
       }
@@ -172,7 +174,6 @@ class _CustomGridViewState extends State<CustomGridView> {
         // pinNote: pinNote,
         copyNote: copyNote,
         // deleteNote: deleteNote,
-        markNoteAsFavorite: markNoteAsFavorite,
         createNoteWidget: createNoteWidget);
   }
 
@@ -206,11 +207,6 @@ class _CustomGridViewState extends State<CustomGridView> {
   //   }
   //   fetchNotes();
   // }
-
-  void markNoteAsFavorite(Note n) {
-    n.isStarred = true;
-    Fluttertoast.showToast(msg: "Marked Favorite");
-  }
 
   void setNoteComplete(Note n) {
     n.completed = true;

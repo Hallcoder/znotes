@@ -213,7 +213,7 @@ class NotesModel with ChangeNotifier {
     ),
     Note(
       titleDescription:
-          "Task n with description that I want to cut and show less text",
+          "Task n with description with searchkey that I want to cut and show less text",
       category: Category(
           name: "Study", color: categoryColors["Study"] ?? Colors.amber),
       color: Colors.yellow,
@@ -251,10 +251,8 @@ class NotesModel with ChangeNotifier {
 
   void searchNotes(String searchKey) {
     List<Note> filteredNotes = [];
-    notes.map((n) {
 
-    });
-    for(int i = 0;i<notes.length;i++){
+    for (int i = 0; i < notes.length; i++) {
       Note n = notes[i];
       print("searching notes $notes");
       print(
@@ -266,6 +264,34 @@ class NotesModel with ChangeNotifier {
     print("FilteredNotes $filteredNotes");
     _searchedNotes = filteredNotes;
     notifyListeners();
+  }
+
+  void searchNotes2(String searchKey) {
+    print("The searchKey is $searchKey");
+    List<Note> filteredNotes = [];
+
+    for (int i = 0; i < notes.length; i++) {
+      Note note = notes[i];
+      bool noteContainsKey =
+          note.titleDescription.toLowerCase().contains(searchKey.toLowerCase());
+      // Check if the note title or any subtask title contains the search key
+      bool subtasksContainKey = note.subtasks.any((subtask) {
+        print("searching through subtasks ${subtask.title}");
+        return subtask.title.toLowerCase().contains(searchKey.toLowerCase());
+      });
+      if (subtasksContainKey) {
+        print("Yayy!");
+      }
+      if (noteContainsKey) {
+        print("Awaaa");
+      }
+      if (noteContainsKey || subtasksContainKey) {
+        filteredNotes.add(note);
+      }
+      _searchedNotes = filteredNotes;
+      notifyListeners();
+    }
+    print("FilteredNotes $searchedNotes");
   }
 
   void addNote(Note n) {
