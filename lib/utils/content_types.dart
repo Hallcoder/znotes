@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
 enum ContentType { audio, image, video, checkList }
@@ -20,7 +21,9 @@ class Category {
 var uuid = const Uuid();
 
 class Note {
-  Note(
+  Note() : id = uuid.v4();
+
+  Note.withProperties(
       {required this.titleDescription,
       required this.isStarred,
       required this.isPinned,
@@ -35,18 +38,18 @@ class Note {
       required this.reminders})
       : id = uuid.v4();
   final String id;
-  Category category;
-  Color color;
-  bool isStarred;
-  bool isPinned;
-  String titleDescription;
-  List<ImageContent> images;
-  List<VideoContent> videos;
-  List<AudioContent> audios;
-  List<Subtask> subtasks;
-  bool completed;
-  DateTime dueDate;
-  List<DateTime> reminders;
+  Category? category;
+  Color? color;
+  bool? isStarred = false;
+  bool? isPinned = false;
+  String? titleDescription = "";
+  List<ImageContent> images = [];
+  List<VideoContent> videos = [];
+  List<AudioContent> audios = [];
+  List<Subtask> subtasks = [];
+  bool? completed = false;
+  DateTime? dueDate;
+  List<DateTime>? reminders;
   late DateTime modifiedDate = DateTime.now();
   late DateTime createdAt = DateTime.now();
 
@@ -61,6 +64,11 @@ class Subtask {
   final bool checked;
 
   Subtask({required this.title, required this.checked});
+}
+
+class MediaButton{
+  late IconData icon;
+  MediaButton({required this.icon});
 }
 
 class AudioContent extends Content {

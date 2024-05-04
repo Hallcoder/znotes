@@ -2,7 +2,8 @@ import "package:auto_route/annotations.dart";
 import "package:auto_route/auto_route.dart";
 import "package:znotes/routers/router.gr.dart";
 import "package:znotes/screens/FavoritesScreen.dart";
-import "package:znotes/screens/NoteEditScreen.dart";
+import "package:znotes/screens/NoteCreationPage.dart";
+import "package:znotes/screens/NoteViewingPage.dart";
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
@@ -10,6 +11,7 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(page: HomeRoute.page, initial: true),
         AutoRoute(page: NoteEditRoute.page),
-        AutoRoute(page: FavoritesRoute.page)
+        AutoRoute(page: FavoritesRoute.page),
+        AutoRoute(page: NoteCreationRoute.page)
       ];
 }

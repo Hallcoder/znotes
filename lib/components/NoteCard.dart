@@ -68,15 +68,15 @@ class _NoteCardState extends State<NoteCard> {
       padding: const EdgeInsets.all(3.0),
       child: InkWell(
         onTap: () {
-          context.router.push(const NoteEditRoute());
+          context.router.push(NoteCreationRoute());
         },
         onLongPress: () {
           showDropDownMenu(context: context);
         },
         child: Container(
           decoration: BoxDecoration(
-            color: widget.note.category.color,
-            borderRadius: widget.note.isPinned
+            color: widget.note.category?. color,
+            borderRadius: widget.note.isPinned!
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(12.0),
                     bottomLeft: Radius.circular(12.0),
@@ -93,21 +93,21 @@ class _NoteCardState extends State<NoteCard> {
                   children: [
                     Row(
                       children: [
-                        widget.note.isStarred
+                        widget.note.isStarred!
                             ? const Icon(Icons.star_rounded,
                                 size: 16.0, color: Color(0xfff8f38e))
                             : const SizedBox(),
-                        widget.note.audios.isEmpty
+                        widget.note.audios!.isEmpty
                             ? const SizedBox()
                             : const Icon(Icons.play_arrow_outlined),
-                        widget.note.isPinned
+                        widget.note.isPinned!
                             ? const Icon(
                                 Icons.push_pin_outlined,
                                 size: 16.0,
                                 color: Color(0xfff8f38e),
                               )
                             : const SizedBox(),
-                        widget.note.subtasks.isEmpty
+                        widget.note.subtasks!.isEmpty
                             ? const SizedBox()
                             : const Icon(
                                 Icons.view_list_outlined,
@@ -118,21 +118,21 @@ class _NoteCardState extends State<NoteCard> {
                     Text(
                         style: const TextStyle(
                             fontSize: 16.0, color: Colors.white),
-                        "#${widget.note.category.name.toLowerCase()}")
+                        "#${widget.note.category?.name.toLowerCase()}")
                   ],
                 ),
               ),
               Container(
                 margin: const EdgeInsets.all(10.0),
                 child: Text(
-                    "${widget.note.titleDescription.substring(0, 10)}...",
+                    "${widget.note.titleDescription?.substring(0, 10)}...",
                     style: whiteText),
               ),
               buildContentHighestPriority(widget.note),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  "due ${formatter.format(widget.note.dueDate)}",
+                  "due ${formatter.format(widget.note.dueDate!)}",
                   style: whiteText,
                 ),
               )

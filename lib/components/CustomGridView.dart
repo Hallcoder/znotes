@@ -54,7 +54,7 @@ class _CustomGridViewState extends State<CustomGridView> {
           : notesProvider.searchedNotes) {
         switch (widget.tab["filterProperty"]) {
           case "category":
-            n.category.name.toLowerCase() == selectedOption.toLowerCase()
+            n.category?.name.toLowerCase() == selectedOption.toLowerCase()
                 ? notes.add(n)
                 : null;
             break;
@@ -63,32 +63,32 @@ class _CustomGridViewState extends State<CustomGridView> {
               notes.add(n);
               break;
             } else if (selectedOption == "today" &&
-                (n.dueDate.day == DateTime.now().day &&
-                    n.dueDate.month == DateTime.now().month &&
-                    n.dueDate.year == DateTime.now().year)) {
+                (n.dueDate?.day == DateTime.now().day &&
+                    n.dueDate?.month == DateTime.now().month &&
+                    n.dueDate?.year == DateTime.now().year)) {
               notes.add(n);
             } else if (selectedOption == "tomorrow" &&
-                (n.dueDate.day == DateTime.now().day + 1 &&
-                    n.dueDate.month == DateTime.now().month &&
-                    n.dueDate.year == DateTime.now().year)) {
+                (n.dueDate?.day == DateTime.now().day + 1 &&
+                    n.dueDate?.month == DateTime.now().month &&
+                    n.dueDate?.year == DateTime.now().year)) {
               notes.add(n);
             } else if (selectedOption == "yesterday" &&
-                (n.dueDate.day == DateTime.now().day - 1 &&
-                    n.dueDate.month == DateTime.now().month &&
-                    n.dueDate.year == DateTime.now().year)) {
+                (n.dueDate?.day == DateTime.now().day - 1 &&
+                    n.dueDate?.month == DateTime.now().month &&
+                    n.dueDate?.year == DateTime.now().year)) {
               notes.add(n);
             } else if (selectedOption == "Set date") {
               showDateTimePicker(context);
             }
             break;
           case "completion":
-            if (n.completed) notes.add(n);
+            if (n.completed!) notes.add(n);
             break;
           case "favorites":
-            if (n.isStarred) notes.add(n);
+            if (n.isStarred!) notes.add(n);
             break;
           case "unsorted":
-            if (!n.isStarred && !n.isPinned && !n.completed) notes.add(n);
+            if (!n.isStarred! && !n.isPinned! && !n.completed!) notes.add(n);
             break;
           default:
             notes = notesProvider.isSearching
@@ -243,7 +243,7 @@ class _CustomGridViewState extends State<CustomGridView> {
   //   }
   // }
   void copyNote(Note n) {
-    FlutterClipboard.copy(n.titleDescription).then((value) {
+    FlutterClipboard.copy(n.titleDescription!).then((value) {
       Fluttertoast.showToast(msg: "Copied to Clipboard");
     });
   }

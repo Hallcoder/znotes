@@ -4,7 +4,7 @@ import 'package:znotes/utils/content_types.dart';
 
 class NotesModel with ChangeNotifier {
   final List<Note> _notes = [
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -26,8 +26,8 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2024, 4, 4),
       reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
     ),
-    // Existing Note
-    Note(
+    // Existing Note.withProperties
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -49,7 +49,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 15),
       reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -68,7 +68,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 18),
       reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -89,7 +89,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 15),
       reminders: [DateTime(2023, 10, 10), DateTime(2023, 10, 13)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -108,8 +108,8 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 18),
       reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
     ),
-    // 4 Additional Notes
-    Note(
+    // 4 Additional Note.withPropertiess
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -130,7 +130,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 12),
       reminders: [DateTime(2023, 10, 8), DateTime(2023, 10, 10)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -153,7 +153,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 18),
       reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -172,7 +172,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 18),
       reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(
@@ -192,7 +192,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 20),
       reminders: [DateTime(2023, 10, 18), DateTime(2023, 10, 19)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description that I want to cut and show less text",
       category: Category(name: "Others", color: categoryColors["others"]!),
@@ -210,7 +210,7 @@ class NotesModel with ChangeNotifier {
       dueDate: DateTime(2023, 10, 25),
       reminders: [DateTime(2023, 10, 22), DateTime(2023, 10, 24)],
     ),
-    Note(
+    Note.withProperties(
       titleDescription:
           "Task n with description with searchkey that I want to cut and show less text",
       category: Category(
@@ -255,8 +255,8 @@ class NotesModel with ChangeNotifier {
       Note n = notes[i];
       print("searching notes $notes");
       print(
-          "${n.titleDescription} contains $searchKey=${n.titleDescription.toLowerCase().contains(searchKey.toLowerCase())}");
-      if (n.titleDescription.toLowerCase().contains(searchKey.toLowerCase())) {
+          "${n.titleDescription} contains $searchKey=${n.titleDescription?.toLowerCase().contains(searchKey.toLowerCase())}");
+      if (n.titleDescription!.toLowerCase().contains(searchKey.toLowerCase())) {
         filteredNotes.add(n);
       }
     }
@@ -271,17 +271,17 @@ class NotesModel with ChangeNotifier {
 
     for (int i = 0; i < notes.length; i++) {
       Note note = notes[i];
-      bool noteContainsKey =
-          note.titleDescription.toLowerCase().contains(searchKey.toLowerCase());
+      bool? noteContainsKey =
+          note.titleDescription?.toLowerCase().contains(searchKey.toLowerCase());
       // Check if the note title or any subtask title contains the search key
-      bool subtasksContainKey = note.subtasks.any((subtask) {
+      bool? subtasksContainKey = note.subtasks?.any((subtask) {
         print("searching through subtasks ${subtask.title}");
         return subtask.title.toLowerCase().contains(searchKey.toLowerCase());
       });
-      if (subtasksContainKey) {
+      if (subtasksContainKey!) {
         print("Yayy!");
       }
-      if (noteContainsKey) {
+      if (noteContainsKey!) {
         print("Awaaa");
       }
       if (noteContainsKey || subtasksContainKey) {
@@ -318,7 +318,7 @@ class NotesModel with ChangeNotifier {
             return 1;
           }
         case SortType.byAlphabet:
-          return a.titleDescription.compareTo(b.titleDescription);
+          return a.titleDescription!.compareTo(b.titleDescription!);
         case SortType.byDateAdded:
           if (a.createdAt.isAfter(b.createdAt)) {
             return -1;
@@ -326,7 +326,7 @@ class NotesModel with ChangeNotifier {
             return 1;
           }
         case SortType.byScheduledDate:
-          if (a.dueDate.isBefore(b.dueDate)) {
+          if (a.dueDate!.isBefore(b.dueDate!)) {
             return -1;
           } else {
             return 1;
