@@ -40,7 +40,6 @@ abstract class $AppRouter extends _i5.RootStackRouter {
         routeData: routeData,
         child: _i3.NoteCreationPage(
           key: args.key,
-          note: args.note,
         ),
       );
     },

@@ -13,7 +13,7 @@ class AddMediaButton extends StatelessWidget {
         // padding: const EdgeInsets.all(4.0),
         margin: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
-            color: Colors.grey[500], borderRadius: BorderRadius.circular(12.0)),
+            color: Colors.grey[400], borderRadius: BorderRadius.circular(12.0)),
         child:  Column(
           children: [
             const Row(

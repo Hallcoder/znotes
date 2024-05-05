@@ -60,8 +60,8 @@ class Note {
 }
 
 class Subtask {
-  final String title;
-  final bool checked;
+  String title;
+  bool checked;
 
   Subtask({required this.title, required this.checked});
 }
