@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:znotes/components/CustomGridView.dart';
 import 'package:znotes/components/CustomListTile.dart';
 import 'package:znotes/utils/content_types.dart';

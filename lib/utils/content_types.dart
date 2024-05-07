@@ -12,10 +12,11 @@ class Content {
 }
 
 class Category {
+  final String id;
   final String name;
   final Color color;
 
-  Category({required this.name, required this.color});
+  Category({required this.name, required this.color}): id = uuid.v4();
 }
 
 var uuid = const Uuid();
@@ -60,10 +61,11 @@ class Note {
 }
 
 class Subtask {
+  String id;
   String title;
   bool checked;
 
-  Subtask({required this.title, required this.checked});
+  Subtask({required this.title, required this.checked}):id = uuid.v4();
 }
 
 class MediaButton{

@@ -14,6 +14,7 @@ class TitleEntry extends StatelessWidget {
     return Container(
       height: screenSize.height * 0.12,
       width: screenSize.width,
+      margin: const EdgeInsets.only(bottom: 6.0),
       decoration: BoxDecoration(
           color: note.category != null ? note?.category?.color : Colors.grey[400],
           borderRadius: const BorderRadius.all(Radius.circular(12.0))),
