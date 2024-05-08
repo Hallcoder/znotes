@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:znotes/components/NoteCard.dart';
+import 'package:znotes/models/NoteCreationModel.dart';
 import 'package:znotes/models/NotesProvider.dart';
 import 'package:znotes/utils/content_types.dart';
 
@@ -145,27 +146,30 @@ class _CustomGridViewState extends State<CustomGridView> {
         ),
       );
     }
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Wrap(children: optionsDisplayed),
-          firstColumn.isNotEmpty || secondColumn.isNotEmpty
-              ? Row(children: [
-                  SizedBox(
-                    width: columnWidth,
-                    child: Column(
-                      children: firstColumn,
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => NoteCreationModel(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Wrap(children: optionsDisplayed),
+            firstColumn.isNotEmpty || secondColumn.isNotEmpty
+                ? Row(children: [
+                    SizedBox(
+                      width: columnWidth,
+                      child: Column(
+                        children: firstColumn,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: columnWidth,
-                    child: Column(
-                      children: secondColumn,
-                    ),
-                  )
-                ])
-              : const Center(child: Text("No notes to show!")),
-        ],
+                    SizedBox(
+                      width: columnWidth,
+                      child: Column(
+                        children: secondColumn,
+                      ),
+                    )
+                  ])
+                : const Center(child: Text("No notes to show!")),
+          ],
+        ),
       ),
     );
 

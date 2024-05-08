@@ -3,8 +3,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:znotes/constants.dart';
+import 'package:znotes/models/NoteCreationModel.dart';
 import 'package:znotes/routers/router.gr.dart';
 import 'package:znotes/utils/content_types.dart';
 
@@ -64,10 +66,12 @@ class _NoteCardState extends State<NoteCard> {
 
   @override
   Widget build(BuildContext context) {
+    final noteCreationProvider = Provider.of<NoteCreationModel>(context);
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: InkWell(
         onTap: () {
+          noteCreationProvider.updateNote(widget.note);
           context.router.push(NoteCreationRoute());
         },
         onLongPress: () {

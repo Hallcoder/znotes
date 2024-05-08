@@ -6,6 +6,8 @@ import 'package:uuid/uuid.dart';
 import 'package:znotes/models/NoteCreationModel.dart';
 import 'package:znotes/utils/content_types.dart';
 
+import 'SubtaskTile.dart';
+
 class SubtasksSection extends StatefulWidget {
   const SubtasksSection({Key? key}) : super(key: key);
 
@@ -21,20 +23,26 @@ class _SubtasksSectionState extends State<SubtasksSection> {
   Widget build(BuildContext context) {
     final noteCreationProvider = Provider.of<NoteCreationModel>(context);
     final Note note = noteCreationProvider.note;
+    Size size = MediaQuery.of(context).size;
     Uuid uuid = const Uuid();
     subtasks = [];
     for (final st in note.subtasks) {
-      subtasks.add(ListTile(
-        leading: const Icon(Icons.reorder_rounded, size: 14.0),
+      subtasks.add(SubtaskTile(
         key: ValueKey(uuid.v4()),
-        title: Text(st.title),
+        st: st,
       ));
     }
-    return ReorderableListView(
+    return Container(
+      height: size.height * (subtasks.length * 0.15),
+      padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+      margin: const EdgeInsets.only(top:8.0),
+      child: ReorderableListView(
         header: const Text("Subtasks"),
         children: subtasks,
         onReorder: (oldIndex, newIndex) {
           noteCreationProvider.reorder(oldIndex, newIndex);
-        });
+        }
+      ),
+    );
   }
 }

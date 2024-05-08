@@ -17,10 +17,8 @@ class NoteCreationPage extends StatefulWidget {
 }
 
 class _NoteCreationPageState extends State<NoteCreationPage> {
-
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return ChangeNotifierProvider(
       create: (BuildContext context) => NoteCreationModel(),
       child: Scaffold(
@@ -30,24 +28,22 @@ class _NoteCreationPageState extends State<NoteCreationPage> {
             color: Colors.black,
           ),
           actions: const [
-            Icon(Icons.star_outline_rounded,color: Colors.grey,size:35.0),
+            Icon(Icons.star_outline_rounded, color: Colors.grey, size: 35.0),
             SizedBox(width: 10),
-            Icon(Icons.share_outlined, color: Colors.grey,size:30.0),
+            Icon(Icons.share_outlined, color: Colors.grey, size: 30.0),
             SizedBox(width: 10),
           ],
         ),
-        body:   Padding(
-          padding: const EdgeInsets.all(8.0),
+        body: const Padding(
+          padding: EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TitleEntry(),
-                const AddMediaSection(),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  height: screenSize.height * 0.4, // Adjust the height as needed
-                  child: const SubtasksSection(),
-                ),
+                TitleEntry(),
+                AddMediaSection(),
+                SubtasksSection(),
               ],
             ),
           ),

@@ -5,7 +5,8 @@ import 'package:znotes/constants.dart';
 import '../utils/content_types.dart';
 
 class NoteCreationModel with ChangeNotifier {
-  final Note _note = Note.withProperties(
+  // final bool is
+   Note _note = Note.withProperties(
     titleDescription:
         "Task n with description that I want to cut and show less text",
     category:
@@ -19,10 +20,8 @@ class NoteCreationModel with ChangeNotifier {
     subtasks: [
       Subtask(title: 'Read Chapter 5', checked: true),
       Subtask(title: 'Complete Assignment', checked: false),
-      Subtask(title: 'Learn dance', checked: false),
-      Subtask(title: 'Circles', checked: false),
-      Subtask(title: 'Riez seulement', checked: false),
-
+      Subtask(title: 'Learn dancing', checked: false),
+      Subtask(title: 'Riez seulement', checked: false)
     ],
     completed: false,
     dueDate: DateTime(2023, 10, 18),
@@ -34,6 +33,13 @@ class NoteCreationModel with ChangeNotifier {
   void reorder(int oldIndex, int newIndex) {
     final item = note.subtasks.removeAt(oldIndex);
     note.subtasks.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, item);
+    notifyListeners();
+  }
+
+  void updateNote(Note not) {
+    print("Old note $_note");
+    _note = not;
+    print("New note $_note");
     notifyListeners();
   }
 }
