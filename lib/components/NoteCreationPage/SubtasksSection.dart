@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:znotes/components/NoteCreationPage/AddSubtaskTextField.dart';
 import 'package:znotes/models/NoteCreationModel.dart';
 import 'package:znotes/utils/content_types.dart';
 
@@ -32,6 +33,7 @@ class _SubtasksSectionState extends State<SubtasksSection> {
         st: st,
       ));
     }
+    subtasks.add(AddSubtaskTextField(key:ValueKey(uuid.v4())));
     return Container(
       height: size.height * (subtasks.length * 0.15),
       padding: const EdgeInsets.only(left: 8.0,right: 8.0),

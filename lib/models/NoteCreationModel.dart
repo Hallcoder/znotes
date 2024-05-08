@@ -37,9 +37,30 @@ class NoteCreationModel with ChangeNotifier {
   }
 
   void updateNote(Note not) {
-    print("Old note $_note");
+    print("Old note ${_note.subtasks[0].title}");
     _note = not;
-    print("New note $_note");
+    print("New note ${_note.subtasks[0].title}");
+    notifyListeners();
+  }
+
+  void addSubTask(Subtask st){
+    if(st.title.isNotEmpty){
+      _note.subtasks.add(st);
+    }
+    notifyListeners();
+  }
+  void deleteSubTask(Subtask st){
+    int index = _note.subtasks.indexOf(st);
+    if(index >= 0){
+      _note.subtasks.removeAt(index);
+    }
+    notifyListeners();
+  }
+  void updateSubTask(Subtask oldSt, Subtask newSt){
+    int index = _note.subtasks.indexOf(oldSt);
+    if(index >= 0){
+      _note.subtasks[index] = newSt;
+    }
     notifyListeners();
   }
 }

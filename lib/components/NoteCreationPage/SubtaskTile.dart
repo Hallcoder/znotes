@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:znotes/utils/content_types.dart';
 
 class SubtaskTile extends StatefulWidget {
-  const SubtaskTile({Key? key, required this.st}) : super(key: key);
+  const SubtaskTile({Key? key, required this.st, this.focus}) : super(key: key);
   final Subtask st;
-
+  final bool? focus;
   @override
   State<SubtaskTile> createState() => _SubtaskTileState();
 }
@@ -14,11 +14,12 @@ class _SubtaskTileState extends State<SubtaskTile> {
   late FocusNode focusNode = FocusNode();
 
   @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    if(widget.focus != null && widget.focus == true){
+      focusNode.requestFocus();
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,11 +32,14 @@ class _SubtaskTileState extends State<SubtaskTile> {
                 ? TextFormField(
                     initialValue: widget.st.title,
                     focusNode: focusNode,
+                    decoration: const InputDecoration(
+                      hintText: "Add subtask"
+                    ),
                     onTapOutside: (e) {
                       setState(() {
                         isEditingSubTask = false;
                       });
-                        focusNode.unfocus();
+                      focusNode.unfocus();
                     },
                   )
                 : InkWell(
@@ -43,10 +47,12 @@ class _SubtaskTileState extends State<SubtaskTile> {
                       setState(() {
                         isEditingSubTask = true;
                       });
-                        focusNode.requestFocus();
+                      focusNode.requestFocus();
                     },
                     child: Text(widget.st.title))),
-        isEditingSubTask ? Icon(Icons.close, color: Colors.grey[600], size: 18.0):const SizedBox()
+        isEditingSubTask
+            ? Icon(Icons.close, color: Colors.grey[600], size: 18.0)
+            : const SizedBox()
       ],
     );
   }

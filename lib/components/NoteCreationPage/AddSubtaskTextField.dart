@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:znotes/components/NoteCreationPage/SubtaskTile.dart';
+import 'package:znotes/models/NoteCreationModel.dart';
+import 'package:znotes/utils/content_types.dart';
 
 class AddSubtaskTextField extends StatefulWidget {
   const AddSubtaskTextField({Key? key}) : super(key: key);
@@ -10,27 +14,37 @@ class AddSubtaskTextField extends StatefulWidget {
 }
 
 class _AddSubtaskTextFieldState extends State<AddSubtaskTextField> {
+  bool isAddingTask = false;
   @override
   Widget build(BuildContext context) {
-    bool isAddingTask = false;
     TextEditingController textEditingController = TextEditingController();
-    return GestureDetector(
-      onTap: (){
-        setState(() {
-          isAddingTask = true;
-        });
-      },
-      child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Expanded(
-          child: TextField(
-            onTapOutside:(e){
-              print("out of focus");
-            },
-            controller: textEditingController,
-          ),
-        ),
-        const Icon(Icons.close_rounded)
-      ]),
-    );
+    final noteCreationProvider = Provider.of<NoteCreationModel>(context);
+    Note note = noteCreationProvider.note;
+    return !isAddingTask
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.80,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Subtask ${note.subtasks.length + 1}"
+                  ),
+                  onTap: (){
+                    setState(() {
+                      isAddingTask = true;
+                    });
+                  },
+                  onTapOutside: (e) {
+                    setState(() {
+                      isAddingTask = false;
+                    });
+                  },
+                  controller: textEditingController,
+                ),
+              ),
+            ])
+        : SubtaskTile(st: Subtask(title: "", checked: false),focus: true);
   }
 }
