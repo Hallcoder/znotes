@@ -35,6 +35,7 @@ class _AddSubtaskTextFieldState extends State<AddSubtaskTextField> {
                     setState(() {
                       isAddingTask = true;
                     });
+                    noteCreationProvider.addSubTask(Subtask(title:textEditingController.text,checked: false));
                   },
                   onTapOutside: (e) {
                     setState(() {

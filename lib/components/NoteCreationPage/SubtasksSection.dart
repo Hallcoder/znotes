@@ -33,9 +33,9 @@ class _SubtasksSectionState extends State<SubtasksSection> {
         st: st,
       ));
     }
-    subtasks.add(AddSubtaskTextField(key:ValueKey(uuid.v4())));
+    subtasks.add(SubtaskTile(key:ValueKey(uuid.v4())));
     return Container(
-      height: size.height * (subtasks.length * 0.15),
+      height: size.height * (subtasks.length * 0.2),
       padding: const EdgeInsets.only(left: 8.0,right: 8.0),
       margin: const EdgeInsets.only(top:8.0),
       child: ReorderableListView(
