@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -33,18 +34,22 @@ class _SubtasksSectionState extends State<SubtasksSection> {
         st: st,
       ));
     }
-    subtasks.add(SubtaskTile(key:ValueKey(uuid.v4())));
-    return Container(
-      height: size.height * (subtasks.length * 0.2),
-      padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-      margin: const EdgeInsets.only(top:8.0),
-      child: ReorderableListView(
-        header: const Text("Subtasks"),
-        children: subtasks,
-        onReorder: (oldIndex, newIndex) {
-          noteCreationProvider.reorder(oldIndex, newIndex);
-        }
-      ),
+    return Column(
+      children: [
+        Container(
+          height: size.height * (subtasks.length * 0.065),
+          padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+          margin: const EdgeInsets.only(top:8.0),
+          child: ReorderableListView(
+            header: const Text("Subtasks"),
+            children: subtasks,
+            onReorder: (oldIndex, newIndex) {
+              noteCreationProvider.reorder(oldIndex, newIndex);
+            }
+          ),
+        ),
+        const AddSubtaskTextField()
+      ],
     );
   }
 }
