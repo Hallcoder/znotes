@@ -13,7 +13,6 @@ class AddSubtaskTextField extends StatefulWidget {
 }
 
 class _AddSubtaskTextFieldState extends State<AddSubtaskTextField> {
-  bool isAddingTask = false;
   Subtask st = Subtask(title: "", checked: false);
 
   @override
@@ -24,26 +23,32 @@ class _AddSubtaskTextFieldState extends State<AddSubtaskTextField> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        isAddingTask
-            ? Icon(Icons.reorder_rounded, size: 16.0, color: Colors.grey[400])
-            : const SizedBox(),
-        isAddingTask
-            ? Checkbox(
-                value: st?.checked ?? false, onChanged: (bool? value) {})
-            : const SizedBox(),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.80,
+          width: MediaQuery.of(context).size.width * 0.70,
           child: TextField(
             decoration: InputDecoration(
                 hintText: "Subtask ${note.subtasks.length + 1}"),
-            onTapOutside: (e) {
-              setState(() {
-                isAddingTask = false;
-              });
-            },
             controller: textEditingController,
           ),
         ),
+        GestureDetector(
+          onTap: (){
+            noteCreationProvider.addSubTask(Subtask(title: textEditingController.text,checked: false));
+          },
+          child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, border: Border.all(width: 1.0)),
+              child: const Icon(Icons.check, color: Colors.lightGreen)),
+        ),
+        const SizedBox(width: 5.0),
+        GestureDetector(
+          child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, border: Border.all(width: 1.0)),
+              child: const Icon(Icons.close, color: Colors.red)),
+        )
       ]),
     );
   }
