@@ -16,9 +16,7 @@ class NoteCard extends StatefulWidget {
       required this.note,
       required this.audioPlayer,
       required this.setNoteComplete,
-      // required this.pinNote,
       required this.copyNote,
-      // required this.deleteNote,
       required this.createNoteWidget});
 
   final AudioPlayer audioPlayer;
@@ -79,7 +77,7 @@ class _NoteCardState extends State<NoteCard> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: widget.note.category?. color,
+            color: widget.note.category?.color,
             borderRadius: widget.note.isPinned!
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(12.0),

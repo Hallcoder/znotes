@@ -17,34 +17,67 @@ class NoteCreationPage extends StatefulWidget {
 }
 
 class _NoteCreationPageState extends State<NoteCreationPage> {
+  final ScrollController _outerScrollController = ScrollController();
+  final ScrollController _innerScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _outerScrollController.dispose();
+    _innerScrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<NoteCreationModel>(
       create: (BuildContext context) => NoteCreationModel(),
       child: Scaffold(
-        appBar: AppBar(
-          leading: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          actions: const [
-            Icon(Icons.star_outline_rounded, color: Colors.grey, size: 35.0),
-            SizedBox(width: 10),
-            Icon(Icons.share_outlined, color: Colors.grey, size: 30.0),
-            SizedBox(width: 10),
-          ],
-        ),
-        body: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleEntry(),
-                AddMediaSection(),
-                SubtasksSection(),
-              ],
+        body:  Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: NestedScrollView(
+            controller: _outerScrollController,
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                 const SliverAppBar(
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text("Collapsing Toolbar"),
+                    background: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.star_outline_rounded, color: Colors.grey, size: 35.0),
+                        SizedBox(width: 10),
+                        Icon(Icons.share_outlined, color: Colors.grey, size: 30.0),
+                        SizedBox(width: 10)
+                      ],
+                    )
+                  ),
+                ),
+              ];
+            },
+            body: SingleChildScrollView(
+              child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onPanUpdate: (details) {
+                    // Manually trigger scroll when dragging
+                    Scrollable.of(context)?.position.moveTo(
+                      Scrollable.of(context)!.position.pixels - details.delta.dy,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.ease,
+                    );
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TitleEntry(),
+                      const AddMediaSection(),
+                      SubtasksSection(outerScrollController: _outerScrollController,),
+                    ],
+                  ),
+                ),
             ),
           ),
         ),

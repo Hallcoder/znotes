@@ -17,12 +17,7 @@ class NoteCreationModel with ChangeNotifier {
     images: [],
     videos: [],
     audios: [],
-    subtasks: [
-      Subtask(title: 'Read Chapter 5', checked: true),
-      Subtask(title: 'Complete Assignment', checked: false),
-      Subtask(title: 'Learn dancing', checked: false),
-      Subtask(title: 'Riez seulement', checked: false)
-    ],
+    subtasks: [],
     completed: false,
     dueDate: DateTime(2023, 10, 18),
     reminders: [DateTime(2023, 10, 15), DateTime(2023, 10, 17)],
@@ -37,9 +32,7 @@ class NoteCreationModel with ChangeNotifier {
   }
 
   void updateNote(Note not) {
-    print("Old note ${_note.subtasks[0].title}");
     _note = not;
-    print("New note ${_note.subtasks[0].title}");
     notifyListeners();
   }
 
@@ -53,8 +46,9 @@ class NoteCreationModel with ChangeNotifier {
     int index = _note.subtasks.indexOf(st);
     if(index >= 0){
       _note.subtasks.removeAt(index);
+      print("Deleted subtask");
+      notifyListeners();
     }
-    notifyListeners();
   }
   void updateSubTask(Subtask oldSt, Subtask newSt){
     int index = _note.subtasks.indexOf(oldSt);

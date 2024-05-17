@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         routerConfig: _appRouter.config(),
-
       ),
     );
   }
